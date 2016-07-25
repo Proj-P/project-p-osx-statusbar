@@ -69,18 +69,50 @@
 		0365E3111D3588E200E40A5C /* Statusbar */ = {
 			isa = PBXGroup;
 			children = (
+				03C46AC11D427A9200A30AF3 /* Config */,
+				03C46AC01D427A8C00A30AF3 /* Libraries */,
+				03C46ABF1D427A8600A30AF3 /* Controllers */,
+				03C46ABE1D427A6E00A30AF3 /* Models */,
 				0365E3121D3588E200E40A5C /* AppDelegate.swift */,
-				03C46AB71D4220BB00A30AF3 /* Config.swift */,
-				03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */,
 				0365E3141D3588E200E40A5C /* Assets.xcassets */,
 				0365E3161D3588E200E40A5C /* MainMenu.xib */,
 				0365E3191D3588E200E40A5C /* Info.plist */,
-				03C46AB31D420D3700A30AF3 /* MenuController.swift */,
-				03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */,
-				03C46AB51D420DE900A30AF3 /* LocationModel.swift */,
-				03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */,
 			);
 			path = Statusbar;
+			sourceTree = "<group>";
+		};
+		03C46ABE1D427A6E00A30AF3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				03C46AB51D420DE900A30AF3 /* LocationModel.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		03C46ABF1D427A8600A30AF3 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				03C46AB31D420D3700A30AF3 /* MenuController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		03C46AC01D427A8C00A30AF3 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */,
+				03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */,
+				03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		03C46AC11D427A9200A30AF3 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				03C46AB71D4220BB00A30AF3 /* Config.swift */,
+			);
+			name = Config;
 			sourceTree = "<group>";
 		};
 		2CDF72AC3DE38E4B8FE9C0AD /* Pods */ = {
@@ -136,6 +168,7 @@
 				TargetAttributes = {
 					0365E30E1D3588E200E40A5C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = BAYY4SVKD3;
 					};
 				};
 			};

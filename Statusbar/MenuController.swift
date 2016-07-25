@@ -17,18 +17,18 @@ class MenuController: NSObject {
     let stincrementCalculator   = StincrementCalculator()
     var location:LocationModel
     var menu:NSMenu = NSMenu()
-    let timer = TimedNotificationTicker(notificationName:"menuMinutePassed", intervalInSeconds: 60)
+    
     
     private var kvoContext: UInt8 = 1
     
     init(locationId:Int){
         
-        location        = LocationModel(id: locationId)  // for simplicity, only keep 1 location model
+        location  = LocationModel(id: locationId)  // for simplicity, only keep 1 location model
         super.init()
         
         self.updateMenu()
         self.placeObservers()
-        self.timer.start()
+        
     }
     
     func placeObservers()
@@ -50,11 +50,12 @@ class MenuController: NSObject {
     
     func updateMenu(){
         menu = NSMenu()
-        
+        menu.addItem(NSMenuItem(title: "ProjectP", action: #selector(self.openWeb), keyEquivalent: "w"))
+        menu.addItem(NSMenuItem.separatorItem())
         if location.lastUpdateDate != nil{
             
             let icon = NSImage(named:(location.isOccupied!) ? "tp_occ" : "tp_free")
-            icon?.template = true // best for dark mode
+//            icon?.template = true // best for dark mode
             statusItem.image = icon
         
             statusItem.action = #selector(self.openWeb)
@@ -69,30 +70,32 @@ class MenuController: NSObject {
             if location.end🕛 !== nil && location.start🕛 !== nil {
             
                 
-                let lastVisit🕛     = Int((location.end🕛!.timeIntervalSinceDate(location.start🕛!) / 60) % 60); // visit time in minutes
-                let interval🕛      = Int((location.end🕛!.timeIntervalSinceDate(NSDate()) / 60) % 60); // time ago in minutes
+                var lastVisit🕛     = -1 * Int((location.end🕛!.timeIntervalSinceDate(location.start🕛!) / 60) % 60); // visit time in minutes
+                var interval🕛      = -1 * Int((location.end🕛!.timeIntervalSinceDate(NSDate()) / 60) % 60); // time ago in minutes
                 
-                smellText = stincrementCalculator.calculate(lastVisit🕛)
                 
-                let timeAgoString   = interval🕛 == 0 ? "~1 min" : "\(interval🕛) min"
+                smellText = stincrementCalculator.calculate(lastVisit🕛, passed🕛: interval🕛)
+                lastVisit🕛 = max(1, lastVisit🕛)
+                interval🕛 = max(1, interval🕛)
+                
+                let timeAgoString   = "\(interval🕛) min"
                 let durationString  = "\(lastVisit🕛) min"
                 lastVisitDateText   = "" + timeAgoString + " ago (" + durationString + ")"
             
             
             }else{
                 // no data of subsequent visits to show yet!
-              
             }
         
     
-            smellMenuItem.title = "💨  " + smellText
-            timeMenuItem.title  = "🕛  " + lastVisitDateText
-            if location.state🚽🔒 != nil
-            {
+            smellMenuItem.title     = "💨  " + smellText
+            timeMenuItem.title      = "🕛  " + lastVisitDateText
+            if location.state🚽🔒   != nil {
                 stateMenuItem.title = "🚽  " + location.state🚽🔒!
             }
             menu.addItem(smellMenuItem)
             menu.addItem(timeMenuItem)
+            menu.addItem(NSMenuItem.separatorItem())
             menu.addItem(stateMenuItem)
             
         }else{ // location was not yet loaded
@@ -101,7 +104,7 @@ class MenuController: NSObject {
             statusItem.image = icon
         }
         
-        menu.addItem(NSMenuItem(title: "ProjectP", action: #selector(self.openWeb), keyEquivalent: "w"))
+        
         menu.addItem(NSMenuItem.separatorItem())
         menu.addItem(NSMenuItem(title: "Quit", action:  #selector(self.exitNow), keyEquivalent: "q"))
         
@@ -113,13 +116,13 @@ class MenuController: NSObject {
     
     func exitNow() {
         self.location.closeConnection()
-        timer.stop()
+        
         NSApplication.sharedApplication().terminate(self)
     }
     
     
     deinit {
-        timer.stop()
+        
         print("goodbye have a great time!1!")
     }
     

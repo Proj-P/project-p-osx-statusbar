@@ -8,6 +8,8 @@
 
 import Cocoa
 import Foundation
+import Fabric
+import Crashlytics
 
 
 
@@ -24,13 +26,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
    
     let menuController = MenuController(locationId: Config.LOCATION_ID)
+    let timer = TimedNotificationTicker(notificationName:"minutePassed", intervalInSeconds: 60)
     
     
-    
+    func menuWillOpen(){
+        
+    }
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
-        
         Fabric.with([Crashlytics.self])
 
         
@@ -46,9 +50,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
     
- 
-   
+
+    override init(){
+        
+        
+        super.init()
+        self.timer.start()
+    }
+  
     
+    func exitNow() {
+        menuController.location.closeConnection()
+        timer.stop()
+        NSApplication.sharedApplication().terminate(self)
+    }
+    
+    
+    deinit {
+        timer.stop()
+        print("goodbye have a great time!1!")
+    }
+    
+    
+    
+    func openWeb(){
+        let siteURL:String          = Config.SITE_URL
+        NSWorkspace.sharedWorkspace().openURL(NSURL(string: siteURL)!)
+    }
    
     
 }
