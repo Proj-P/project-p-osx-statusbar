@@ -1,8 +1,13 @@
 PODS:
+  - Crashlytics (3.7.2):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.7)
   - Socket.IO-Client-Swift (6.1.4)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
+  - Crashlytics
+  - Fabric
   - Socket.IO-Client-Swift (~> 6.1.4)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
 
@@ -16,9 +21,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
+  Crashlytics: 871829f976ed5c8fb72eaffa9ccfdb070715ad82
+  Fabric: 1c5939056d59f082d9952016a8f68f51153f1096
   Socket.IO-Client-Swift: 9581cf2f48672712803d73a20e8147e53058251a
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: d72ff576ff4ee1cb8cf4ce11d8025ba81c588d8c
+PODFILE CHECKSUM: d5722af12f642772b1307becbc8afca741b0f83a
 
 COCOAPODS: 1.0.1
