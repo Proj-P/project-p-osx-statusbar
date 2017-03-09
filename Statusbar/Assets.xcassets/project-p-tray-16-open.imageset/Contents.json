@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "project-p-tray-16-open.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "project-p-tray-16-open.png",
       "scale" : "2x"
     },
     {
