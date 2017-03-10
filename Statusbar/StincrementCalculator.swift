@@ -10,7 +10,7 @@ import Cocoa
 
 class StincrementCalculator: NSObject {
     
-    func  calculate(duration🕛:Int, passed🕛:Int) -> String{
+    func  calculate(_ duration🕛:Int, passed🕛:Int) -> String{
         
         
         let visit🕛:Int = duration🕛 - passed🕛

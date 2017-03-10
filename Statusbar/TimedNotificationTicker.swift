@@ -10,11 +10,11 @@ import Cocoa
 
 class TimedNotificationTicker: NSObject {
 
-    var timer:NSTimer?
+    var timer:Timer?
     var notificationName: String
-    var intervalInSeconds:NSTimeInterval
+    var intervalInSeconds:TimeInterval
     
-    init(notificationName:String, intervalInSeconds:NSTimeInterval)
+    init(notificationName:String, intervalInSeconds:TimeInterval)
     {
         self.notificationName = notificationName
         self.intervalInSeconds = intervalInSeconds
@@ -22,12 +22,12 @@ class TimedNotificationTicker: NSObject {
     }
     
     func start() {
-       timer = NSTimer.scheduledTimerWithTimeInterval(self.intervalInSeconds, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+       timer = Timer.scheduledTimer(timeInterval: self.intervalInSeconds, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
       
     }
     
     func runTimedCode() {
-         NSNotificationCenter.defaultCenter().postNotificationName(self.notificationName, object: nil)
+         NotificationCenter.default.post(name: Notification.Name(rawValue: self.notificationName), object: nil)
     }
     
     func stop() {
