@@ -9,7 +9,7 @@
 import Cocoa
 import SwiftyJSON
 
-typealias ServiceResponse = (JSON, NSError?) -> Void
+typealias ServiceResponse = (JSON, Error?) -> Void
 
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
@@ -17,25 +17,34 @@ class RestApiManager: NSObject {
     
     
     
-        
-        
-        
-    func getLocationData(id:Int, onCompletion: (JSON) -> Void) {
+    
+    func getLocationVisitData(_ id:Int, onCompletion: @escaping (JSON) -> Void) {
+        let route = baseURL + "\(id)/visits";
+        makeHTTPGetRequest(route, onCompletion: { json, err in
+            onCompletion(json as JSON)
+        })
+    }
+    
+    
+    func getLocationData(_ id:Int, onCompletion: @escaping (JSON) -> Void) {
             let route = baseURL + "\(id)";
             makeHTTPGetRequest(route, onCompletion: { json, err in
                 onCompletion(json as JSON)
             })
         }
         
-        func makeHTTPGetRequest(path: String, onCompletion: ServiceResponse) {
-            let request = NSMutableURLRequest(URL: NSURL(string: path)!)
-            
-            let session = NSURLSession.sharedSession()
-            
-            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                let json:JSON = JSON(data: data!)
-                onCompletion(json, error)
-            })
+        func makeHTTPGetRequest(_ path: String, onCompletion: @escaping ServiceResponse) {
+            let request = NSMutableURLRequest(url: URL(string: path)!)
+
+            let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error -> Void in
+                if(data == nil)
+                {
+                    onCompletion(JSON.null, error)
+                }else{
+                    let json:JSON = JSON(data: data!);
+                    onCompletion(json, error)
+                }
+            }
             task.resume()
         }
     }
