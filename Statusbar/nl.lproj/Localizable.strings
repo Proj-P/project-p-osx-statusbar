@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Statusbar
+
+  Created by Erik de Groot on 10/03/2017.
+  Copyright © 2017 Tjuna. All rights reserved.
+*/
+"network_error" = "Kan geen verbinding maken met de server!";
+"queue_start" = "Zet me in de wachtrij!";
+"queue_stop" = "Uit de wachtrij!";
+"quit": "Afsluiten";
+"all_clear" : "De kust is veilig!";
