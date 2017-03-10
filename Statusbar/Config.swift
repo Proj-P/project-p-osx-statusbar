@@ -13,4 +13,5 @@ struct Config
     static let SITE_URL     = "https://project-p.xyz"
     static let API_URL      = "https://api.project-p.xyz/locations/"
     static let LOCATION_ID  = 2
+    static let STYLE        = 2
 }
