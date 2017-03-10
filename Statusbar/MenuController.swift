@@ -144,7 +144,7 @@ class MenuController: NSObject, NSMenuDelegate {
         statusItem.action = #selector(AppDelegate.openWeb)
 
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Quit", action:  #selector(self.exitNow), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: NSLocalizedString("quit", comment:"quit"), action:  #selector(self.exitNow), keyEquivalent: "q"))
         return menu
 
     }
@@ -196,7 +196,7 @@ class MenuController: NSObject, NSMenuDelegate {
     
     func updateQueueState(_ queued:Bool)
     {
-        self.queueText = (queued == true) ? "Unqueue me!": "Queue me!";
+        self.queueText = NSLocalizedString((queued==true) ? "queue_start" : "queue_stop", comment: "");
         self.update()
     }
 

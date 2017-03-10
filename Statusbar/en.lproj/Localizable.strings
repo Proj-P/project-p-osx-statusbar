@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Statusbar
+
+  Created by Erik de Groot on 10/03/2017.
+  Copyright © 2017 Tjuna. All rights reserved.
+*/
+"network_error" = "Error Connecting to server";
+"queue_start" = "Queue me!";
+"queue_stop" = "Unqueue me!";
+"quit": "Quit";
+"all_clear": "All Clear!";
