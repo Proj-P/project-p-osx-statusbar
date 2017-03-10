@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import SocketIOClientSwift
+import SocketIO
 import SwiftyJSON
 
 
@@ -16,106 +16,125 @@ class LocationModel: NSObject {
     let apiURL:String      = Config.API_URL
     var state🚽🔒:String?
     var isOccupied:Bool?
-    var start🕛: NSDate?
-    var end🕛: NSDate?
-    var lastUpdateDate:NSDate?
-    
-    let socket      = SocketIOClient(socketURL: NSURL(string: Config.API_URL)!, options: [.Log(false), .ForcePolling(true)]) // needs to be class variable, or else arc will kill it
+    var lastUpdateDate:Date?
     var locationId:Int
+    var lastVisit:LocationVisitModel?
+    
+    let socket      = SocketIOClient(socketURL: URL(string: Config.API_URL)!) // needs to be class variable, or else arc will kill it
+    
     
     init(id:Int) {
         // perform some initialization here
         self.locationId = id
+        
         super.init()
-        self.checkLastVisit()
+        
+        self.getLocationFromRest(id)
+        self.getLastVisitFromRest(id)
         self.socketConnect()
     }
     
     func socketConnect()
     {
-        
-        
         socket.on("connect") {data, ack in
             print("socket connected")
         }
         
-        socket.on("location") {data, ack in
-            print("location updated")
-
-            if let dateString = data[0]["data"]!!["changed_at"]{
-                
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-dd-MM'T'HH:mm:ss'Z'"
-                let date = dateFormatter.dateFromString(String(dateString))
-                let state = data[0]["data"]!!["occupied"]
-                if(state == 1)
-                {
-                    self.start🕛 =  date;
-                }else{
-                    self.end🕛   =  date;
-                }
+        socket.on("location") {result, ack in
+            if let data = result as? Array<Dictionary<String, Dictionary<String, AnyObject>>>{
+                let row = data[0]["data"]!;
+                self.handleSocketResponse(row)
             }
-            if let state = data[0]["data"]!!["occupied"]  {
-                self.updateState(state == 1)
-            }
-            
-            
         }
         
         socket.connect()
     }
+   
     
-    func updateState(occupied:Bool)
+    func updateState(_ occupied:Bool)
     {
         if(occupied == true)
         {
-            print("isOccupied");
-            state🚽🔒   =  "🔒"
-            start🕛     =  NSDate()
+            print("occupied");
+            state🚽🔒   = "🔒"
         }else{
             print("free");
             state🚽🔒   = "🔓"
-            end🕛       =  NSDate()
         }
         
-        self.lastUpdateDate = NSDate()
+        self.lastUpdateDate = Date()
         isOccupied = occupied
-        NSNotificationCenter.defaultCenter().postNotificationName("locationStateUpdate", object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
     
-    func handleLocationData(result:JSON)
+    func handleSocketResponse(_ row:Dictionary<String, AnyObject>)
     {
+        print("location updated by socket")
+        print(row)
+        let occupied = (row["occupied"] as! Bool == true);
+        self.handleUpdate(occupied, data: row)
+    }
+    
+    func handleRestResponse(_ result:JSON)
+    {
+        print("location updated by Rest API")
         
-        let state :Int = Int(result["data"]["occupied"].int!)
-        let dateString = result["data"]["changed_at"].string!
+        if(result != JSON.null)
+        {
+            let row = result["data"].dictionaryObject! as Dictionary<String, AnyObject>
+            self.handleUpdate(row["occupied"] as! Bool, data: row)
+        }
+    }
+    
+    func handleVisitRestResponse(_ result:JSON)
+    {
+        print("visit updated by Rest API")
         
-                
-                
-                let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-dd-MM'T'HH:mm:ss'Z'"
-            if let date = dateFormatter.dateFromString(dateString)
-            {
-                if(state == 1)
-                {
-                    start🕛 =  date;
-                }else{
-                    end🕛   =  date;
-                }
-            }
+        if(result == JSON.null)
+        {
+            return
+        }
         
-            self.updateState(state == 1)
+        let row:JSON = result["data"][result["data"].count-1]
+
+        self.lastVisit = LocationVisitModel(
+            id:         row["id"].int!,
+            end🕛:      row["end_time"].string!,
+            start🕛:    row["start_time"].string!,
+            locationId: row["location_id"].int!,
+            duration:   row["duration"].double!
+        )
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
+    }
+    
+    func handleUpdate(_ occupied:Bool, data:Dictionary<String, AnyObject>){
+        
+        if(occupied == false)
+        {
+        self.getLastVisitFromRest(locationId)
+        }
+        
+        self.updateState(occupied)
+
     }
     
     deinit{
         self.closeConnection();
     }
+    
+
  
     func closeConnection() {
         socket.disconnect()
     }
-    
-    func checkLastVisit()
+  
+    func getLocationFromRest(_ id:Int)
     {
-        RestApiManager.sharedInstance.getLocationData(locationId, onCompletion: self.handleLocationData);
+        RestApiManager.sharedInstance.getLocationData(id, onCompletion: self.handleRestResponse);
+    }
+    
+    func getLastVisitFromRest(_ id:Int)
+    {
+        RestApiManager.sharedInstance.getLocationVisitData(id, onCompletion: self.handleVisitRestResponse);
     }
 }
