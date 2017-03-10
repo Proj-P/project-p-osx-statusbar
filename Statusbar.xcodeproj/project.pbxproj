@@ -11,6 +11,7 @@
 		0365E3131D3588E200E40A5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0365E3121D3588E200E40A5C /* AppDelegate.swift */; };
 		0365E3151D3588E200E40A5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0365E3141D3588E200E40A5C /* Assets.xcassets */; };
 		0365E3181D3588E200E40A5C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0365E3161D3588E200E40A5C /* MainMenu.xib */; };
+		03AC69C21D48A02800EC2E78 /* LocationVisitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */; };
 		03C46AB21D3D2C9200A30AF3 /* RestApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */; };
 		03C46AB41D420D3700A30AF3 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB31D420D3700A30AF3 /* MenuController.swift */; };
 		03C46AB61D420DE900A30AF3 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB51D420DE900A30AF3 /* LocationModel.swift */; };
@@ -87,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				03C46AB51D420DE900A30AF3 /* LocationModel.swift */,
+				03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -275,6 +277,7 @@
 				03C46AB61D420DE900A30AF3 /* LocationModel.swift in Sources */,
 				03C46ABD1D42496900A30AF3 /* TimedNotificationTicker.swift in Sources */,
 				0365E3131D3588E200E40A5C /* AppDelegate.swift in Sources */,
+				03AC69C21D48A02800EC2E78 /* LocationVisitModel.swift in Sources */,
 				0347957F1E71996A0035CEF0 /* QueueManager.swift in Sources */,
 				03C46AB81D4220BB00A30AF3 /* Config.swift in Sources */,
 				03C46AB41D420D3700A30AF3 /* MenuController.swift in Sources */,
