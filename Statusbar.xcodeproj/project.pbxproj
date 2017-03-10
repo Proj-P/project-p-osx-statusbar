@@ -22,12 +22,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0347957C1E7154650035CEF0 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = "../../../Library/Developer/Xcode/DerivedData/Statusbar-dnmknrloyhetclgwubhgvjwofwho/Build/Products/Debug/Socket.IO-Client-Swift/SocketIO.framework"; sourceTree = "<group>"; };
 		0347957E1E71996A0035CEF0 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		0365E30F1D3588E200E40A5C /* Statusbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Statusbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0365E3121D3588E200E40A5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0365E3141D3588E200E40A5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0365E3171D3588E200E40A5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		0365E3191D3588E200E40A5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationVisitModel.swift; sourceTree = "<group>"; };
 		03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApiManager.swift; sourceTree = "<group>"; };
 		03C46AB31D420D3700A30AF3 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		03C46AB51D420DE900A30AF3 /* LocationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		8CF27D9F4D3232D7ACDF933E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0347957C1E7154650035CEF0 /* SocketIO.framework */,
 				6F52593E130CC257ECD7CAD6 /* Pods_Statusbar.framework */,
 			);
 			name = Frameworks;
