@@ -15,7 +15,7 @@ class MenuController: NSObject, NSMenuDelegate {
     
     let siteURL:String          = Config.SITE_URL
     
-    var queueText = NSLocalizedString("queue_start", comment: "queue me!")
+    var queueText = "queue_start".localized
     var location:LocationModel
     var menu:NSMenu = NSMenu()
     var lastUpdate:Date = Date()
@@ -104,9 +104,9 @@ class MenuController: NSObject, NSMenuDelegate {
                 lastVisitDateText    = "?"
             }
             
-            
-            smellMenuItem.title     = "💨'o Meter: " + smellText
-            timeMenuItem.title      = "🕛  " + lastVisitDateText
+            smellMenuItem.title     = "smell_o_meter_label".localized + smellText
+            timeMenuItem.title      = "last_visit_label".localized + lastVisitDateText
+            durationMenuItem.title  = "duration_label".localized + durationText
             
             switch Config.STYLE{
             case 1:
@@ -134,17 +134,14 @@ class MenuController: NSObject, NSMenuDelegate {
             menu.addItem(stateMenuItem)
             
         }else{ // location was not yet loaded
-            
-            
-            menu.addItem(NSMenuItem(title: NSLocalizedString("network_error", comment: "Can't connect to server!"), action:nil, keyEquivalent:""))
-            
+            menu.addItem(NSMenuItem(title: "network_error".localized, action:nil, keyEquivalent:""))
         }
         
         statusItem.image = icon
         statusItem.action = #selector(AppDelegate.openWeb)
 
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: NSLocalizedString("quit", comment:"quit"), action:  #selector(self.exitNow), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "quit".localized, action:  #selector(self.exitNow), keyEquivalent: "q"))
         return menu
 
     }
@@ -196,7 +193,7 @@ class MenuController: NSObject, NSMenuDelegate {
     
     func updateQueueState(_ queued:Bool)
     {
-        self.queueText = NSLocalizedString((queued==true) ? "queue_start" : "queue_stop", comment: "");
+        self.queueText = (queued==true) ? "queue_start".localized : "queue_stop".localized;
         self.update()
     }
 

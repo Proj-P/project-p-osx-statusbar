@@ -27,7 +27,7 @@ class QueueManager: NSObject {
         
         let notification = NSUserNotification()
         notification.title = "Project-P"
-        notification.informativeText = NSLocalizedString("all_clear", comment: "all clear signal")
+        notification.informativeText = "all_clear".localized
         notification.soundName = self.sound
         
         NSUserNotificationCenter.default.deliver(notification)
