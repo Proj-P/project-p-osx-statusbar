@@ -8,5 +8,8 @@
 "network_error" = "Error Connecting to server";
 "queue_start" = "Queue me!";
 "queue_stop" = "Unqueue me!";
-"quit": "Quit";
-"all_clear": "All Clear!";
+"quit"= "Quit";
+"all_clear"= "All Clear! ✨";
+"smell_o_meter_label" = "💨'o Meter: ";
+"last_visit_label" = "🕛 ";
+"duration_label" = "🕛 Took ";
