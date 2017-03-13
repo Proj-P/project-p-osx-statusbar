@@ -1,12 +1,14 @@
 PODS:
   - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
+  - DateToolsSwift (2.0.2)
   - Fabric (1.6.11)
   - Socket.IO-Client-Swift (8.3.0)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Crashlytics
+  - DateToolsSwift
   - Fabric
   - Socket.IO-Client-Swift (~> 8.3.0)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
@@ -22,10 +24,11 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  DateToolsSwift: e493a31bc1fb5bc163f27f897c637f789e4a2b5b
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   Socket.IO-Client-Swift: 7ad3aded3c0f74d99555e950ac3aa82ca3eefbaf
   SwiftyJSON: 05cf0e98a950e2ba343735264f5a96b81e755d00
 
-PODFILE CHECKSUM: 75d846f4262b61a02e4f5fe45884cc48c6793fb2
+PODFILE CHECKSUM: f19cccf24e08a2100958a1895bc7ebec9afdbaf3
 
 COCOAPODS: 1.2.0

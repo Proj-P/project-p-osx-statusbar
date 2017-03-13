@@ -18,6 +18,7 @@
 		03C46AB81D4220BB00A30AF3 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB71D4220BB00A30AF3 /* Config.swift */; };
 		03C46ABB1D42345600A30AF3 /* StincrementCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */; };
 		03C46ABD1D42496900A30AF3 /* TimedNotificationTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */; };
+		03C4E49F1E76D6D400470588 /* Localizator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C4E49E1E76D6D400470588 /* Localizator.swift */; };
 		03C5E35A1E73108E00AF00C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C5E35C1E73108E00AF00C8 /* Localizable.strings */; };
 		44ACA5D9A9E8097D2E61B710 /* Pods_Statusbar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F52593E130CC257ECD7CAD6 /* Pods_Statusbar.framework */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 		03C46AB71D4220BB00A30AF3 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StincrementCalculator.swift; sourceTree = "<group>"; };
 		03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimedNotificationTicker.swift; sourceTree = "<group>"; };
+		03C4E49E1E76D6D400470588 /* Localizator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizator.swift; sourceTree = "<group>"; };
 		03C5E3591E73105D00AF00C8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		03C5E35B1E73108E00AF00C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03C5E35D1E73109B00AF00C8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */,
 				03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */,
 				0347957E1E71996A0035CEF0 /* QueueManager.swift */,
+				03C4E49E1E76D6D400470588 /* Localizator.swift */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				03C46AB61D420DE900A30AF3 /* LocationModel.swift in Sources */,
 				03C46ABD1D42496900A30AF3 /* TimedNotificationTicker.swift in Sources */,
 				0365E3131D3588E200E40A5C /* AppDelegate.swift in Sources */,
+				03C4E49F1E76D6D400470588 /* Localizator.swift in Sources */,
 				03AC69C21D48A02800EC2E78 /* LocationVisitModel.swift in Sources */,
 				0347957F1E71996A0035CEF0 /* QueueManager.swift in Sources */,
 				03C46AB81D4220BB00A30AF3 /* Config.swift in Sources */,
@@ -367,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -409,7 +413,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
