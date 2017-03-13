@@ -13,7 +13,7 @@ class StincrementCalculator: NSObject {
     func  calculate(_ duration🕛:Int, passed🕛:Int) -> String{
         
         
-        let visit🕛:Int = duration🕛 - passed🕛
+        let visit🕛:Int = duration🕛 + passed🕛
         let maxStincrementVisit = 10
         let minStincrementVisit = 2
         

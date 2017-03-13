@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import DateToolsSwift
 
 
 class MenuController: NSObject, NSMenuDelegate {
@@ -69,10 +70,11 @@ class MenuController: NSObject, NSMenuDelegate {
             let smellMenuItem   = NSMenuItem()
             let timeMenuItem    = NSMenuItem()
             let stateMenuItem   = NSMenuItem()
+            let durationMenuItem = NSMenuItem()
             
             var smellText:String
             var lastVisitDateText:String
-            var intervalText:String
+            var durationText:String
             
             let end🕛       = location.lastVisit?.end🕛
             let start🕛     = location.lastVisit?.start🕛
@@ -80,18 +82,14 @@ class MenuController: NSObject, NSMenuDelegate {
             
             if end🕛 != nil && start🕛 != nil {
                 
+                var lastVisitDuration   = Int(floor(duration! / 60)) // visit time in minutes
+                let interval            = end🕛!.timeIntervalSinceNow // time ago in seconds
                 
-                var lastVisit🕛     = Int(floor(duration! / 60)) // visit time in minutes
-                let interval🕛      = -1 * end🕛!.timeIntervalSince(Date()) // time ago in minutes
+                lastVisitDateText   = self.stringFromTimeInterval(interval) as String
+                smellText           = stincrementCalculator.calculate(lastVisitDuration * 60, passed🕛: Int(interval))
+                lastVisitDuration         = max(1, lastVisitDuration)
                 
-                intervalText        = self.stringFromTimeInterval(interval🕛) as String
-                smellText           = stincrementCalculator.calculate(lastVisit🕛, passed🕛: Int(interval🕛))
-                lastVisit🕛         = max(1, lastVisit🕛)
-                
-                
-                let timeAgoString   = intervalText as  String
-                let durationString  = "\(lastVisit🕛) min"
-                lastVisitDateText   = "" + timeAgoString + " ago (" + durationString + ")"
+                durationText        = "\(lastVisitDuration) min"
                 
                 if(smellText == "✨" && location.isOccupied! == false)
                 {
@@ -102,6 +100,7 @@ class MenuController: NSObject, NSMenuDelegate {
                 // no data of subsequent visits to show yet!
                 smellText            = "?"
                 lastVisitDateText    = "?"
+                durationText         = "?"
             }
             
             smellMenuItem.title     = "smell_o_meter_label".localized + smellText
@@ -129,6 +128,7 @@ class MenuController: NSObject, NSMenuDelegate {
             menu.addItem(NSMenuItem.separator())
             menu.addItem(smellMenuItem)
             menu.addItem(timeMenuItem)
+            menu.addItem(durationMenuItem)
             menu.addItem(queueItem)
             menu.addItem(NSMenuItem.separator())
             menu.addItem(stateMenuItem)
@@ -168,23 +168,23 @@ class MenuController: NSObject, NSMenuDelegate {
     
    
    
-    
-    func stringFromTimeInterval(_ interval:TimeInterval) -> String {
-        
-        let ti = NSInteger(interval)
-        
-        
-        let minutes = (ti / 60) % 60
-        let hours = (ti / 3600) - 5
-        
-        
-        
-        if hours != 0{
-            return String(format: "%dh:%0.2dm",hours,minutes)
-        }else{
-            return String(format: "%dm",minutes)
-        }
-    }
+//    
+//    func stringFromTimeInterval(_ interval:TimeInterval) -> String {
+//        
+//        let ti = NSInteger(interval)
+//        
+//        
+//        let minutes = (ti / 60) % 60
+//        let hours = (ti / 3600) - 5
+//        
+//        
+//        
+//        if hours != 0{
+//            return String(format: "%dh:%0.2dm",hours,minutes)
+//        }else{
+//            return String(format: "%dm",minutes)
+//        }
+//    }
     
     func queueStateChanged(_ notification:NSNotification){
         let state = notification.object as! Bool
@@ -197,13 +197,20 @@ class MenuController: NSObject, NSMenuDelegate {
         self.update()
     }
 
- // once the api clock issues are fixed, ise this one
-//    func stringFromTimeInterval(_ interval:TimeInterval) -> String {
-//        
-//        let date = Date(timeIntervalSinceReferenceDate:interval)
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "hh:mm"
-//        
-//        return formatter.string(from:date)
-//    }
+//  once the api clock issues are fixed, ise this one
+    func stringFromTimeInterval(_ interval:TimeInterval) -> String {
+        
+        
+        let hours = Config.API_HOUR_OFFSET;
+        let offset = Double(hours * 3600);
+        let totalInterval = Double(interval + offset);
+        let fromDate = Date() - totalInterval
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let lastDate = NSDate().addingTimeInterval(totalInterval)
+        let last = formatter.string(from: lastDate as Date)
+        
+        return last + " (" + fromDate.timeAgoSinceNow + ")"
+    }
 }

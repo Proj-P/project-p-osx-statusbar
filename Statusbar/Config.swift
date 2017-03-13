@@ -14,4 +14,5 @@ struct Config
     static let API_URL      = "https://api.project-p.xyz/locations/"
     static let LOCATION_ID  = 2
     static let STYLE        = 2
+    static let API_HOUR_OFFSET = 4
 }
