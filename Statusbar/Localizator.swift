@@ -9,12 +9,11 @@
 import Foundation
 
 private class localizer {
-    
+
     static let sharedInstance = localizer() // singleton
 
-    
     func localize(string: String) -> String {
-        
+
         return NSLocalizedString(string, comment: "")
     }
 }
