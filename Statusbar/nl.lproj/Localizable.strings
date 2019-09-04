@@ -6,7 +6,10 @@
   Copyright © 2017 Tjuna. All rights reserved.
 */
 "network_error" = "Kan geen verbinding maken met de server!";
-"queue_start" = "Zet me in de wachtrij!";
-"queue_stop" = "Uit de wachtrij!";
-"quit": "Afsluiten";
-"all_clear" : "De kust is veilig!";
+"queue_start" = "Hou me op de hoogte!";
+"queue_stop" = "Laat maar, vals alarm!";
+"quit"= "Afsluiten";
+"all_clear" = "De kust is veilig! ✨";
+"smell_o_meter_label" = "💨' Meter: ";
+"last_visit_label" = "🕛 ";
+"duration_label" = "🕛 Duurde ";

@@ -13,24 +13,21 @@ import Crashlytics
 
 @NSApplicationMain
 
-
-
 class AppDelegate: NSObject, NSApplicationDelegate {
-    
-    
-    
+
     @IBOutlet weak var window: NSWindow!
-    
-    let menuController = MenuController(locationId: (UserDefaults.standard.integer(forKey: "locationId") != 0)
-        ? UserDefaults.standard.integer(forKey: "locationId")
-        : Config.LOCATION_ID)
+    let location = LocationModel(id: Config.LOCATION_ID)
+    var menuController: MenuController?
     
     let queueManager = QueueManager();
-    let timer = TimedNotificationTicker(notificationName:"minutePassed", intervalInSeconds: 60)
+    let timer = TimedNotificationTicker(notificationName: "minutePassed", intervalInSeconds: 60)
+
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Register initial defaults
         let initialDefaults = ["NSApplicationCrashOnExceptions": true]
+        menuController = MenuController(location: self.location, queueManager: queueManager)
+        
         
         UserDefaults.standard.register(defaults: initialDefaults)
         Fabric.with([Crashlytics.self])
@@ -39,36 +36,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
-        menuController.location.closeConnection()
+        menuController!.location.closeConnection()
         timer.stop()
     }
-    
-  
+
     func applicationWillTerminate() {
         // Insert code here to tear down your application
-        menuController.location.closeConnection()
+        menuController!.location.closeConnection()
         timer.stop()
     }
-    
-    
-    func exitNow() {
-        NSApplication.shared().terminate(self)
+
+    @objc func exitNow() {
+        self.location.closeConnection()
+        NSApplication.shared.terminate(self)
     }
-    
-    
-    func openWeb(){
-        let siteURL:String          = Config.SITE_URL
-        NSWorkspace.shared().open(URL(string: siteURL)!)
+
+    @objc func openWeb() {
+        let siteURL: String          = Config.SITE_URL
+        NSWorkspace.shared.open(URL(string: siteURL)!)
     }
-    
-    func toggleQueue()
-    {
-        if(queueManager.queued == false)
-        {
+
+    @objc func toggleQueue() {
+        if(queueManager.queued == false) {
             queueManager.start()
-        }else{
+        } else {
             queueManager.stop()
         }
     }
 }
-
