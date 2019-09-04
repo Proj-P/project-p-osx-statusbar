@@ -10,26 +10,25 @@ import Cocoa
 
 class TimedNotificationTicker: NSObject {
 
-    var timer:Timer?
+    var timer: Timer?
     var notificationName: String
-    var intervalInSeconds:TimeInterval
-    
-    init(notificationName:String, intervalInSeconds:TimeInterval)
-    {
+    var intervalInSeconds: TimeInterval
+
+    init(notificationName: String, intervalInSeconds: TimeInterval) {
         self.notificationName = notificationName
         self.intervalInSeconds = intervalInSeconds
-        
+
     }
-    
+
     func start() {
-       timer = Timer.scheduledTimer(timeInterval: self.intervalInSeconds, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
-      
+        timer = Timer.scheduledTimer(timeInterval: self.intervalInSeconds, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+
     }
-    
-    func runTimedCode() {
+
+    @objc func runTimedCode() {
          NotificationCenter.default.post(name: Notification.Name(rawValue: self.notificationName), object: nil)
     }
-    
+
     func stop() {
         timer!.invalidate()
     }
