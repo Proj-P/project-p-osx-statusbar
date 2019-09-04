@@ -6,10 +6,10 @@
   Copyright © 2017 Tjuna. All rights reserved.
 */
 "network_error" = "Error Connecting to server";
-"queue_start" = "Queue me!";
-"queue_stop" = "Unqueue me!";
+"queue_start" = "Keep me posted!";
+"queue_stop" = "Nevermind, false alarm.";
 "quit"= "Quit";
 "all_clear"= "All Clear! ✨";
-"smell_o_meter_label" = "💨'o Meter: ";
-"last_visit_label" = "🕛 ";
-"duration_label" = "🕛 Took ";
+"smell_o_meter_label" = "Stank'o Meter: ";
+"last_visit_label" = "last visit at:";
+"duration_label" = "last visit took ";
