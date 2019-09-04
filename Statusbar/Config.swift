@@ -8,11 +8,10 @@
 
 import Foundation
 
-struct Config
-{
-    static let SITE_URL     = "https://project-p.xyz"
-    static let API_URL      = "https://api.project-p.xyz/locations/"
-    static let LOCATION_ID  = 2
-    static let STYLE        = 2
-    static let API_HOUR_OFFSET = 4
+struct Config {
+    static let SITE_URL     = "https://project-p.vps101.tjuna.com"
+    static let API_URL      = "https://project-p.vps101.tjuna.com/locations/"
+    static let LOCATION_ID  = 1
+    static let STYLE        = 1
+    static let API_HOUR_OFFSET = 0
 }
