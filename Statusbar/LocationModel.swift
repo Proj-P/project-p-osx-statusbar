@@ -10,6 +10,26 @@ import Cocoa
 import SocketIO
 import SwiftyJSON
 
+
+class ApiLocation {
+    var average_duration: Int
+    let changed_at: Date?
+    let id: Int
+    let name: String
+    let occupied: Bool
+    
+    required init ( data : [String:Any]) {
+        
+        self.id = data["id"] as! Int
+        self.average_duration = data["average_duration"] as! Int
+        self.changed_at = data["changed_at"] as? Date
+        self.name = data["name"] as! String
+        self.occupied = data["occupied"] as! Bool
+    }
+}
+
+
+
 class LocationModel: NSObject {
     let apiURL: String      = Config.API_URL
     var state🚽🔒:String?
@@ -40,16 +60,16 @@ class LocationModel: NSObject {
             print("socket connected")
         }
 
-        socket.on("location") {result, _ in
-            if let data = result as? Array<Dictionary<String, Dictionary<String, AnyObject>>> {
-                guard let row = data[0]["data"] else {
-                    print("invalid response")
-                    return
-                }
-                self.handleSocketResponse(row)
+        socket.on("location") {response, _ in
+            let json = JSON(response)
+            guard let data = json.dictionaryObject else{
+                print("invalid response from socket")
+                return
             }
+            
+            self.handleSocketResponse(data)
         }
-
+        
         socket.connect()
     }
 
@@ -67,17 +87,16 @@ class LocationModel: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
 
-    func handleSocketResponse(_ row: Dictionary<String, AnyObject>) {
+    func handleSocketResponse(_ row: [String:Any]) {
         print("location updated by socket")
 
-        let occupied = (row["occupied"] as? Bool == true)
-
-        self.handleUpdate(occupied, data: row)
+        let location = ApiLocation(data: row);
+        self.handleUpdate(location.occupied, data: location)
     }
 
     func handleRestResponse(_ result: JSON) -> Array<LocationModel> {
         var collection = [] as Array<LocationModel>;
-        guard let response = result["data"].array as Array<JSON>? else {
+        guard let response = result.array as Array<JSON>? else {
             return collection;
         }
 
@@ -93,7 +112,7 @@ class LocationModel: NSObject {
 
     func handleSingleRestResponse(_ result: JSON) {
         print("location updated by Rest API")
-        print(result["data"] )
+        
         if(result == JSON.null || result.rawString() == "") {
             print("empty response")
             return
@@ -111,20 +130,13 @@ class LocationModel: NSObject {
             return
         }
 
-        guard let row = result["data"].dictionary else {
+        guard let row = result.dictionaryObject else {
             return
         }
 
-        print("hoogashaka")
-        let object = row as Dictionary<String, AnyObject>
-        guard let status = row["occupied"]?.bool else {
-            print("invalid response")
-            return
-        }
+        let location = ApiLocation(data: row as [String : Any])
 
-        self.handleUpdate(status, data: object)
-        return
-
+        self.handleUpdate(location.occupied, data: location)
     }
 
     func handleVisitRestResponse(_ result: JSON) {
@@ -134,7 +146,7 @@ class LocationModel: NSObject {
             return
         }
 
-        let row: JSON = result["data"][result["data"].count-1]
+        let row: JSON = result[result.count-1]
 
         self.lastVisit = LocationVisitModel(
             id: row["id"].int!,
@@ -146,13 +158,13 @@ class LocationModel: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
 
-    func handleUpdate(_ occupied: Bool, data: Dictionary<String, AnyObject>) {
+    func handleUpdate(_ isOccupied: Bool, data: ApiLocation) {
 
-        if(occupied == false) {
-        self.getLastVisitFromRest(locationId)
+        if(isOccupied == false) {
+            self.getLastVisitFromRest(locationId)
         }
 
-        self.updateState(occupied)
+        self.updateState(isOccupied)
 
     }
 
