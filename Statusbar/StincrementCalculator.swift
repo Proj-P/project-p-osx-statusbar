@@ -10,26 +10,28 @@ import Cocoa
 
 class StincrementCalculator: NSObject {
 
-    func  calculate(_ duration🕛:Int, passed🕛:Int) -> String {
+    func  calculate(_ duration🕛:Int, timeAgo🕛:Int) -> String {
 
-        let visit🕛:Int = duration🕛 + passed🕛
+        let elapsed = duration🕛 - timeAgo🕛
+        
         let maxStincrementVisit = 10
         let minStincrementVisit = 2
-
-        var smellText           = "✨"
-        let stinkBaseText       = "🙊"
-        let stincrementerText   = "💩"
         let stincrementerTimeAmount: Int = 2
 
-        if(visit🕛 > maxStincrementVisit) {
-            smellText = "☠☠☠"
-        } else if(visit🕛 > minStincrementVisit) {
-
-            smellText = stinkBaseText
-            for i in 0..<visit🕛 {
-                if(i % stincrementerTimeAmount == 1) {
-                    smellText+=stincrementerText
-                }
+        if( duration🕛 < minStincrementVisit  || elapsed < 0)
+        {
+            return "✨"
+        }
+        
+        if(duration🕛 > maxStincrementVisit) {
+            return "☠☠☠"
+        }
+    
+        var smellText = "🙊"
+        
+        for i in 0..<duration🕛 {
+            if(i % stincrementerTimeAmount == 1) {
+                smellText += "💩"
             }
         }
 

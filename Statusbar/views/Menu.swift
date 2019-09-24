@@ -94,7 +94,7 @@ class Menu: NSMenu {
             let interval            = end🕛!.timeIntervalSinceNow // time ago in seconds
             
             lastVisitDateText   = stringFromTimeInterval(interval) as String
-            smellText           = stincrementCalculator.calculate(lastVisitDuration * 60, passed🕛: Int(interval))
+            smellText           = stincrementCalculator.calculate(lastVisitDuration, timeAgo🕛: Int(interval))
             lastVisitDuration         = max(1, lastVisitDuration)
             
             durationText        = "\(lastVisitDuration) min"
