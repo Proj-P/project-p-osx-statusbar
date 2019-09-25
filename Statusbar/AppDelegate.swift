@@ -16,14 +16,21 @@ import Crashlytics
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    let location = LocationModel(id: Config.LOCATION_ID)
+    var location: LocationModel = LocationModel(id: Config.LOCATION_ID);
+    var socket: SocketConnector?
     var menuController: MenuController?
     
     let queueManager = QueueManager();
     let timer = TimedNotificationTicker(notificationName: "minutePassed", intervalInSeconds: 60)
 
     
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Override point for customization after application launch.
+        self.location = LocationModel(id: Config.LOCATION_ID);
+        self.socket = SocketConnector(model: self.location)
+        self.socket!.listen(event: "location")
+        
         // Register initial defaults
         let initialDefaults = ["NSApplicationCrashOnExceptions": true]
         menuController = MenuController(location: self.location, queueManager: queueManager)
@@ -36,18 +43,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
-        menuController!.location.closeConnection()
+        socket!.closeConnection()
         timer.stop()
     }
 
     func applicationWillTerminate() {
         // Insert code here to tear down your application
-        menuController!.location.closeConnection()
+        socket!.closeConnection()
         timer.stop()
     }
 
     @objc func exitNow() {
-        self.location.closeConnection()
+        socket!.closeConnection()
         NSApplication.shared.terminate(self)
     }
 

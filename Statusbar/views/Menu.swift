@@ -66,6 +66,13 @@ class Menu: NSMenu {
         
     }
     
+    func updateIcon(isOccupied:Bool){
+        self.icon = NSImage(named: (isOccupied) ? "tp2_occ" : "tp2_free")
+        DispatchQueue.main.async {
+            self.statusItem.image = self.icon
+        }
+    }
+    
     func updateItems(location:LocationModel){
         if(location.lastUpdateDate == nil)
         {
@@ -79,9 +86,7 @@ class Menu: NSMenu {
             self.addItem(NSMenuItem(title: "network_error".localized, action: nil, keyEquivalent: ""))
             
         }
-        
-        icon = NSImage(named: (location.isOccupied!) ? "tp2_occ" : "tp2_free")
-        statusItem.image = icon
+
         //            icon?.template = true // best for dark mode
         
         let end🕛       = location.lastVisit?.end🕛

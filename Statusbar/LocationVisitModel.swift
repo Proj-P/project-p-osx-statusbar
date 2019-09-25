@@ -17,9 +17,9 @@ class LocationVisitModel: NSObject {
 
     var locationId: Int
     var locationVisitId: Int
-    var duration: Double
+    var duration: Int
 
-    init(id: Int, end🕛:String!, start🕛:String!, locationId: Int, duration: Double) {
+    init(id: Int, end🕛:String!, start🕛:String!, locationId: Int, duration: Int) {
         // perform some initialization here
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"

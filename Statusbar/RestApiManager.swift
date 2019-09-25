@@ -11,7 +11,7 @@ import SwiftyJSON
 
 typealias ServiceResponse = (JSON, Error?) -> Void
 
-class RestApiManager: NSObject {
+class RestApiManager {
     static let sharedInstance = RestApiManager()
     let baseURL = Config.API_URL
 

@@ -18,7 +18,6 @@ class MenuController: NSObject, NSMenuDelegate {
 
     var menu: Menu
     var location: LocationModel
-    
     var lastUpdate: Date = Date()
 //    private var kvoContext: UInt8 = 1
 
@@ -36,6 +35,7 @@ class MenuController: NSObject, NSMenuDelegate {
         statusItem.menu = menu
         menu.delegate = self
         self.updateItems()
+        menu.updateIcon(isOccupied: location.isOccupied ?? false)
         self.placeObservers()
     }
     
@@ -48,10 +48,9 @@ class MenuController: NSObject, NSMenuDelegate {
     }
 
     @objc func locationStateChanged(_ notification: Notification) {
+        menu.updateIcon(isOccupied: location.isOccupied ?? false)
         self.updateItems()
     }
-
-    
 
     func updateItems() {
         print("updating menu")

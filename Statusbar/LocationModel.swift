@@ -7,28 +7,8 @@
 //
 
 import Cocoa
-import SocketIO
+
 import SwiftyJSON
-
-
-class ApiLocation {
-    var average_duration: Int
-    let changed_at: Date?
-    let id: Int
-    let name: String
-    let occupied: Bool
-    
-    required init ( data : [String:Any]) {
-        
-        self.id = data["id"] as! Int
-        self.average_duration = data["average_duration"] as! Int
-        self.changed_at = data["changed_at"] as? Date
-        self.name = data["name"] as! String
-        self.occupied = data["occupied"] as! Bool
-    }
-}
-
-
 
 class LocationModel: NSObject {
     let apiURL: String      = Config.API_URL
@@ -39,38 +19,14 @@ class LocationModel: NSObject {
     var locationId: Int
     var lastVisit: LocationVisitModel?
 
-    let manager = SocketManager(socketURL: URL(string: Config.API_URL)!, config: [.log(true), .compress])
-
-    var socket: SocketIOClient
-
     init(id: Int, name: String? = nil) {
         // perform some initialization here
         self.locationId = id
         self.name = name
-        self.socket = self.manager.defaultSocket
         super.init()
 
         self.getLocationFromRest(id)
         self.getLastVisitFromRest(id)
-        self.socketConnect()
-    }
-
-    func socketConnect() {
-        socket.on("connect") {_, _ in
-            print("socket connected")
-        }
-
-        socket.on("location") {response, _ in
-            let json = JSON(response)
-            guard let data = json.dictionaryObject else{
-                print("invalid response from socket")
-                return
-            }
-            
-            self.handleSocketResponse(data)
-        }
-        
-        socket.connect()
     }
 
     func updateState(_ occupied: Bool) {
@@ -86,12 +42,16 @@ class LocationModel: NSObject {
         isOccupied = occupied
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
-
-    func handleSocketResponse(_ row: [String:Any]) {
-        print("location updated by socket")
-
-        let location = ApiLocation(data: row);
-        self.handleUpdate(location.occupied, data: location)
+    
+    func handleSocketResponse(_ rawJson: String) {
+        let decoder = JSONDecoder()
+        do {
+            let row = try decoder.decode(Location.self, from: rawJson.data(using: .utf8)!)
+            
+            self.handleUpdate(data: row);
+        }catch let parsingError {
+            print(parsingError)
+        }
     }
 
     func handleRestResponse(_ result: JSON) -> Array<LocationModel> {
@@ -134,9 +94,9 @@ class LocationModel: NSObject {
             return
         }
 
-        let location = ApiLocation(data: row as [String : Any])
+        let location = Location(row as [String : Any])
 
-        self.handleUpdate(location.occupied, data: location)
+        self.handleUpdate(data: location)
     }
 
     func handleVisitRestResponse(_ result: JSON) {
@@ -153,27 +113,19 @@ class LocationModel: NSObject {
             end🕛: row["end_time"].string!,
             start🕛: row["start_time"].string!,
             locationId: row["location_id"].int!,
-            duration: row["duration"].double!
+            duration: Int(floor(row["duration"].double!))
         )
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
 
-    func handleUpdate(_ isOccupied: Bool, data: ApiLocation) {
+    func handleUpdate(data: Location) {
 
-        if(isOccupied == false) {
+        if(data.occupied == false) {
             self.getLastVisitFromRest(locationId)
         }
 
-        self.updateState(isOccupied)
+        self.updateState(data.occupied)
 
-    }
-
-    deinit {
-        self.closeConnection()
-    }
-
-    func closeConnection() {
-        socket.disconnect()
     }
 
     func getLocationFromRest(_ id: Int) {
