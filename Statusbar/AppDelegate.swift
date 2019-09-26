@@ -55,6 +55,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func toggleQueue() {
+        if(location.isOccupied == false)
+        {
+            queueManager.notifyUser();
+            return;
+        }
+        
         if(queueManager.queued == false) {
             queueManager.start()
         } else {
