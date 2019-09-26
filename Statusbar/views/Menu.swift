@@ -18,14 +18,12 @@ class Menu: NSMenu {
     let smellMenuItem   = NSMenuItem()
     let timeMenuItem    = NSMenuItem()
     let stateMenuItem   = NSMenuItem()
-    let durationMenuItem = NSMenuItem()
     var queueItem = NSMenuItem()
     var titleItem = NSMenuItem()
     var exitItem = NSMenuItem()
     
     var smellText: String = ""
     var lastVisitDateText: String = ""
-    var durationText: String = ""
     var icon = NSImage(named: ("tp2_free"))
     var statusItem: NSStatusItem
     var queued:Bool;
@@ -55,11 +53,10 @@ class Menu: NSMenu {
         self.addItem(titleItem)
         self.addItem(NSMenuItem.separator())
         self.addItem(stateMenuItem)
-        self.addItem(NSMenuItem.separator())
         self.addItem(smellMenuItem)
         self.addItem(NSMenuItem.separator())
         self.addItem(timeMenuItem)
-        self.addItem(durationMenuItem)
+        self.addItem(NSMenuItem.separator())
         self.addItem(queueItem)
         self.addItem(NSMenuItem.separator())
         self.addItem(exitItem)
@@ -93,16 +90,14 @@ class Menu: NSMenu {
         let start🕛     = location.lastVisit?.start🕛
         let duration    = location.lastVisit?.duration
         
-        if end🕛 != nil && start🕛 != nil {
+        if end🕛 != nil && start🕛 != nil && duration != nil {
             
-            var lastVisitDuration   = Int(floor(duration! / 60)) // visit time in minutes
-            let interval            = end🕛!.timeIntervalSinceNow // time ago in seconds
+            let durationMin     = max(1, duration! / 60) // visit time in minutes
+            let interval        = end🕛!.timeIntervalSinceNow // time ago in seconds
+            let intervalMin         = Int(floor(interval / 60))
             
-            lastVisitDateText   = stringFromTimeInterval(interval) as String
-            smellText           = stincrementCalculator.calculate(lastVisitDuration, timeAgo🕛: Int(interval))
-            lastVisitDuration         = max(1, lastVisitDuration)
-            
-            durationText        = "\(lastVisitDuration) min"
+            lastVisitDateText   = stringFromTimeInterval(interval, durationMin) as String
+            smellText           = stincrementCalculator.calculate(durationMin, timeAgo🕛: intervalMin)
             
             if(smellText == "✨" && location.isOccupied! == false) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "allClear"), object: nil)
@@ -112,18 +107,16 @@ class Menu: NSMenu {
             // no data of subsequent visits to show yet!
             smellText            = "?"
             lastVisitDateText    = "?"
-            durationText         = "?"
         }
         
         smellMenuItem.title     = "smell_o_meter_label".localized + smellText
         timeMenuItem.title      = "last_visit_label".localized + lastVisitDateText
-        durationMenuItem.title  = "duration_label".localized + durationText
         
         switch Config.STYLE {
         case 1:
             if location.state🚽🔒 != nil {
                 let text = (location.state🚽🔒 == "🔒") ? "Occupado!" : "Go ahead!"
-                stateMenuItem.title = "🚽  " + location.state🚽🔒! + text
+                stateMenuItem.title = "🚽" + location.state🚽🔒! + text
             }
             break
         case 2:
@@ -145,7 +138,7 @@ class Menu: NSMenu {
         self.update()
     }
     
-    func stringFromTimeInterval(_ interval: TimeInterval) -> String {
+    func stringFromTimeInterval(_ interval: TimeInterval, _ durationMin: Int) -> String {
         
         let hours = Config.API_HOUR_OFFSET
         let offset = Double(hours * 3600)
@@ -156,7 +149,7 @@ class Menu: NSMenu {
         formatter.dateFormat = "HH:mm"
         let lastDate = NSDate().addingTimeInterval(totalInterval)
         let last = formatter.string(from: lastDate as Date)
-        
-        return last + " (" + fromDate.timeAgoSinceNow + ")"
+        let date = fromDate.timeAgoSinceNow
+        return "\(date) (\(last), \(durationMin) min)"
     }
 }

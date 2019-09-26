@@ -12,24 +12,24 @@ class StincrementCalculator: NSObject {
 
     func  calculate(_ duration🕛:Int, timeAgo🕛:Int) -> String {
 
-        let elapsed = duration🕛 - timeAgo🕛
+        let elapsed = Int(duration🕛 - timeAgo🕛)
         
         let maxStincrementVisit = 10
         let minStincrementVisit = 2
         let stincrementerTimeAmount: Int = 2
 
-        if( duration🕛 < minStincrementVisit  || elapsed < 0)
+        if(elapsed < minStincrementVisit)
         {
             return "✨"
         }
         
-        if(duration🕛 > maxStincrementVisit) {
+        if(elapsed > maxStincrementVisit) {
             return "☠☠☠"
         }
     
         var smellText = "🙊"
         
-        for i in 0..<duration🕛 {
+        for i in 0..<elapsed {
             if(i % stincrementerTimeAmount == 1) {
                 smellText += "💩"
             }

@@ -42,8 +42,6 @@ class MenuController: NSObject, NSMenuDelegate {
     func placeObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.locationStateChanged(_:)), name: NSNotification.Name(rawValue: "locationStateUpdate"), object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.locationStateChanged(_:)), name: NSNotification.Name(rawValue: "minutePassed"), object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(self.queueStateChanged(_:)), name: NSNotification.Name(rawValue: "queued"), object: nil)
     }
 
@@ -69,20 +67,5 @@ class MenuController: NSObject, NSMenuDelegate {
     @objc func queueStateChanged(_ notification: NSNotification) {
         let state = notification.object as! Bool
         menu.queued = state
-    }
-
-    func stringFromTimeInterval(_ interval: TimeInterval) -> String {
-
-        let hours = Config.API_HOUR_OFFSET
-        let offset = Double(hours * 3600)
-        let totalInterval = Double(interval + offset)
-        let fromDate = Date() - totalInterval
-
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        let lastDate = NSDate().addingTimeInterval(totalInterval)
-        let last = formatter.string(from: lastDate as Date)
-
-        return last + " (" + fromDate.timeAgoSinceNow + ")"
     }
 }

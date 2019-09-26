@@ -11,5 +11,5 @@
 "quit"= "Quit";
 "all_clear"= "All Clear! ✨";
 "smell_o_meter_label" = "Stank'o Meter: ";
-"last_visit_label" = "last visit at:";
+"last_visit_label" = "last visit: ";
 "duration_label" = "last visit took ";
