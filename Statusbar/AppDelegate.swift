@@ -8,8 +8,6 @@
 
 import Cocoa
 import Foundation
-import Fabric
-import Crashlytics
 
 @NSApplicationMain
 
@@ -21,9 +19,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var menuController: MenuController?
     
     let queueManager = QueueManager();
-    let timer = TimedNotificationTicker(notificationName: "minutePassed", intervalInSeconds: 60)
-
-    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Override point for customization after application launch.
@@ -37,20 +32,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         
         UserDefaults.standard.register(defaults: initialDefaults)
-        Fabric.with([Crashlytics.self])
-        self.timer.start()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
         socket!.closeConnection()
-        timer.stop()
     }
 
     func applicationWillTerminate() {
         // Insert code here to tear down your application
         socket!.closeConnection()
-        timer.stop()
     }
 
     @objc func exitNow() {

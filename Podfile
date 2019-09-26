@@ -6,8 +6,6 @@ target 'Statusbar' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod 'Socket.IO-Client-Swift'
-  pod 'Fabric'
-  pod 'Crashlytics'
   pod 'DateToolsSwift'
   pod 'SwiftLint'
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
