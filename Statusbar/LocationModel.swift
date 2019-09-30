@@ -11,13 +11,13 @@ import Cocoa
 import SwiftyJSON
 
 class LocationModel: NSObject {
-    let apiURL: String      = Config.API_URL
+    let apiURL: String = Config.API_URL
     var state🚽🔒:String?
     var isOccupied: Bool?
     var name: String?
     var lastUpdateDate: Date?
     var locationId: Int
-    var lastVisit: LocationVisitModel?
+    var lastVisit: LocationVisit?
 
     init(id: Int, name: String? = nil) {
         // perform some initialization here
@@ -44,13 +44,12 @@ class LocationModel: NSObject {
     }
     
     func handleSocketResponse(_ rawJson: String) {
-        let decoder = JSONDecoder()
         do {
-            let row = try decoder.decode(Location.self, from: rawJson.data(using: .utf8)!)
-            
-            self.handleUpdate(data: row);
-        }catch let parsingError {
-            print(parsingError)
+            let json = try JSONSerialization.jsonObject(with: rawJson.data(using: .utf8)!, options: [])
+            let location = Location(data: json as! [String: Any]);
+            self.handleUpdate(location);
+        }catch _ {
+            print("socket returned invalid JSON")
         }
     }
 
@@ -72,53 +71,36 @@ class LocationModel: NSObject {
 
     func handleSingleRestResponse(_ result: JSON) {
         print("location updated by Rest API")
-        
-        if(result == JSON.null || result.rawString() == "") {
-            print("empty response")
+
+        guard let data = result.dictionaryObject else {
+            print("parsing error")
             return
         }
 
-        if let error = result["error"].string {
-            print("error recieved")
-            print(error)
-            return
-        }
+        let location = Location(data: data as [String : Any])
 
-        if let error = result["error"].dictionary {
-            //Now you got your value
-            print(error)
-            return
-        }
-
-        guard let row = result.dictionaryObject else {
-            return
-        }
-
-        let location = Location(row as [String : Any])
-
-        self.handleUpdate(data: location)
+        self.handleUpdate(location)
     }
 
     func handleVisitRestResponse(_ result: JSON) {
         print("visit updated by Rest API")
-
-        if(result == JSON.null) {
+        let row = result[result.count-1];
+        
+        guard let data:[String: Any] = row.dictionaryObject else{
+            print("parsing error")
             return
         }
 
-        let row: JSON = result[result.count-1]
-
-        self.lastVisit = LocationVisitModel(
-            id: row["id"].int!,
-            end🕛: row["end_time"].string!,
-            start🕛: row["start_time"].string!,
-            locationId: row["location_id"].int!,
-            duration: Int(floor(row["duration"].double!))
-        )
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
+        let visit = LocationVisit(data: data)
+        
+        self.lastVisit = visit;
+        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "lastVisitUpdate"), object: visit)
     }
+    
+    
 
-    func handleUpdate(data: Location) {
+    func handleUpdate(_ data: Location) {
 
         if(data.occupied == false) {
             self.getLastVisitFromRest(locationId)

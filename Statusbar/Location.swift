@@ -8,16 +8,44 @@
 
 import Foundation
 
-struct Location: Codable {
-    let changed_at: String?
+class Location: Codable {
+    let changed_at: Date?
     let id: Int
     let name: String
     let occupied: Bool
+    let average_duration: Int
 
-    init (_ data: [String:Any]) {
+    
+    init (id: Int,
+          changedAt: String,
+          averageDuration: Int,
+          name: String,
+          occupied: Bool
+        ) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+        
+        self.id = id
+        
+        self.changed_at = formatter.date(from: changedAt)
+        self.average_duration = averageDuration
+        
+        self.name = name
+        self.occupied = occupied
+    }
+    
+    init (data: [String:Any]) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
         
         self.id = data["id"] as! Int
-        self.changed_at = data["changed_at"] as? String
+        let changedAt = data["changed_at"] as! String
+        
+        self.changed_at = formatter.date(from: changedAt)
+        self.average_duration = data["average_duration"] as! Int;
+        
         self.name = data["name"] as! String
         self.occupied = data["occupied"] as! Bool
     }

@@ -10,11 +10,10 @@ import Cocoa
 import SocketIO
 import SwiftyJSON
 
-class LocationVisitModel: NSObject {
+class LocationVisit: NSObject {
 
     var start🕛: Date
     var end🕛: Date
-
     var locationId: Int
     var locationVisitId: Int
     var duration: Int
@@ -30,10 +29,22 @@ class LocationVisitModel: NSObject {
         self.locationId = locationId
         self.duration   = duration
 
-        print("start date", self.start🕛)
-        print("end date", self.end🕛)
         super.init()
+    }
+    
+    init(data: [String:Any]) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
 
+        
+        self.locationVisitId = data["id"] as! Int;
+        let end🕛 = data["end_time"] as! String;
+        let start🕛  = data["start_time"] as! String;
+        self.locationId = data["location_id"] as! Int;
+        self.duration = Int(floor(data["duration"] as! Double))
+        
+        self.end🕛      = formatter.date(from: end🕛)!
+        self.start🕛    = formatter.date(from: start🕛)!
     }
 
 }

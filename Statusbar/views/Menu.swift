@@ -65,7 +65,7 @@ class Menu: NSMenu {
     
     func updateIcon(isOccupied:Bool){
         self.icon = NSImage(named: (isOccupied) ? "tp2_occ" : "tp2_free")
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { //image should be changed on main thread
             self.statusItem.image = self.icon
         }
     }
@@ -86,23 +86,18 @@ class Menu: NSMenu {
 
         //            icon?.template = true // best for dark mode
         
-        let end🕛       = location.lastVisit?.end🕛
-        let start🕛     = location.lastVisit?.start🕛
-        let duration    = location.lastVisit?.duration
+
         
-        if end🕛 != nil && start🕛 != nil && duration != nil {
+        if let lastVisit = location.lastVisit {
+            let end🕛       = lastVisit.end🕛
+            let duration    = lastVisit.duration
             
-            let durationMin     = max(1, duration! / 60) // visit time in minutes
-            let interval        = end🕛!.timeIntervalSinceNow // time ago in seconds
+            let durationMin     = max(1, duration / 60) // visit time in minutes
+            let interval        = end🕛.timeIntervalSinceNow // time ago in seconds
             let intervalMin         = Int(floor(interval / 60))
             
             lastVisitDateText   = stringFromTimeInterval(interval, durationMin) as String
             smellText           = stincrementCalculator.calculate(durationMin, timeAgo🕛: intervalMin)
-            
-            if(smellText == "✨" && location.isOccupied! == false) {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "allClear"), object: nil)
-            }
-            
         } else {
             // no data of subsequent visits to show yet!
             smellText            = "?"
@@ -130,11 +125,13 @@ class Menu: NSMenu {
             break
         }
         
+        queueItem.isEnabled = location.isOccupied!
         
         queueItem.title = (queued==false)
             ? "queue_start".localized
             : "queue_stop".localized
         
+
         self.update()
     }
     

@@ -43,15 +43,27 @@ class MenuController: NSObject, NSMenuDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.locationStateChanged(_:)), name: NSNotification.Name(rawValue: "locationStateUpdate"), object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.queueStateChanged(_:)), name: NSNotification.Name(rawValue: "queued"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.lastVisitUpdate(_:)), name: NSNotification.Name(rawValue: "lastVisitUpdate"), object: nil)
+    }
+    
+    @objc func lastVisitUpdate(_ notification: Notification) {
+        if(menu.queued && location.isOccupied == false) {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "allClear"), object: nil)
+        }
+        self.updateItems()
     }
 
     @objc func locationStateChanged(_ notification: Notification) {
-        menu.updateIcon(isOccupied: location.isOccupied ?? false)
+        
+        menu.updateIcon(isOccupied: self.location.isOccupied ?? false)
         self.updateItems()
     }
 
     func updateItems() {
         print("updating menu")
+        print("\(String(describing: location.lastVisit?.end🕛))")
+        
         menu.updateItems(location: location)
     }
     
