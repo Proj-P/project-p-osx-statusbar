@@ -16,21 +16,21 @@ class SocketConnector {
         config: [.log(Config.SOCKET_LOGGING), .compress]
     )
     var socket: SocketIOClient
-    let model:LocationModel
-    
+    let model: LocationModel
+
     init(model: LocationModel) {
-        
+
         self.apiURL = model.apiURL
-        self.model = model;
+        self.model = model
         self.socket = self.manager.defaultSocket
-        
+
         self.socketConnect()
     }
-    
+
     func listen(event: String) {
         socket.on(event) {response, _ in
             let rawJson = response[0] as! String
-            
+
             self.model.handleSocketResponse(rawJson)
         }
     }
@@ -39,10 +39,10 @@ class SocketConnector {
         socket.on("connect") {_, _ in
             print("socket connected")
         }
-     
+
         socket.connect()
     }
-    
+
     deinit {
         self.closeConnection()
     }

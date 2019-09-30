@@ -11,71 +11,42 @@ import SwiftyJSON
 
 typealias ServiceResponse = (JSON, Error?) -> Void
 
-enum clientError: Error {
+enum httpError: Error {
     case validationError(String)
+    case clientError(String)
 }
 
 class RestApiManager {
     static let sharedInstance = RestApiManager()
     let baseURL = Config.API_URL
 
-    func getLocationVisitData(_ id: Int, onCompletion: @escaping (JSON) -> Void) {
-        let route = baseURL + "\(id)/visits"
+    func getData(_ path: String, onCompletion: @escaping (JSON) -> Void) {
+        let route = baseURL + path
         makeHTTPGetRequest(route, onCompletion: { json, _ in
             do {
                 let data = try self.verifyResponse(json)
                 onCompletion(data)
-            }catch{
+            } catch {
                 return
             }
         })
     }
 
-    func getLocationData(_ id: Int, onCompletion: @escaping (JSON) -> Void) {
-        let route = baseURL + "\(id)"
-        makeHTTPGetRequest(route, onCompletion: { json, _ in
-            do {
-                let data = try self.verifyResponse(json)
-                onCompletion(data)
-            }catch{
-                return
-            }
-            
-        })
-    }
-
-    func getLocationsData(onCompletion: @escaping (JSON) -> Array<LocationModel>) {
-        let route = baseURL
-        makeHTTPGetRequest(route, onCompletion: { json, _ in
-            do {
-                let data = try self.verifyResponse(json)
-                onCompletion(data)
-            }catch{
-                return
-            }
-        })
-    }
-    
     func verifyResponse(_ result: JSON)throws -> JSON {
-        
+
         if(result == JSON.null || result.rawString() == "") {
-            print("empty response")
-            throw clientError.validationError("empty response")
+            throw httpError.validationError("empty response")
         }
 
         if let error = result["error"].string {
-            print("error recieved")
-            print(error)
-            throw clientError.validationError("invalid response")
+            throw httpError.clientError(error)
         }
 
         if let error = result["error"].dictionary {
-            //Now you got your value
-            print(error)
-            throw clientError.validationError("invalid response")
+            throw httpError.clientError("invalid request: \(error)")
         }
-        
-        return result;
+
+        return result
     }
 
     func makeHTTPGetRequest(_ path: String, onCompletion: @escaping ServiceResponse) {
@@ -93,9 +64,7 @@ class RestApiManager {
             }
 
             do {
-                guard let json: JSON = try JSON(data: data) else {
-                    print("empty response");
-                }
+                let json: JSON = try JSON(data: data)
                 onCompletion(json, error)
             } catch {
                 // ehhhhhh

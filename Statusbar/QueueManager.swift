@@ -26,9 +26,8 @@ class QueueManager: NSObject {
         notifyUser()
         self.stop()
     }
-    
-    func notifyUser()
-    {
+
+    func notifyUser() {
         let notification = NSUserNotification()
         notification.title = "Project-P"
         notification.informativeText = "all_clear".localized

@@ -31,18 +31,17 @@ class LocationVisit: NSObject {
 
         super.init()
     }
-    
-    init(data: [String:Any]) {
+
+    init(data: [String: Any]) {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
 
-        
-        self.locationVisitId = data["id"] as! Int;
-        let end🕛 = data["end_time"] as! String;
-        let start🕛  = data["start_time"] as! String;
-        self.locationId = data["location_id"] as! Int;
+        self.locationVisitId = data["id"] as! Int
+        let end🕛 = data["end_time"] as! String
+        let start🕛  = data["start_time"] as! String
+        self.locationId = data["location_id"] as! Int
         self.duration = Int(floor(data["duration"] as! Double))
-        
+
         self.end🕛      = formatter.date(from: end🕛)!
         self.start🕛    = formatter.date(from: start🕛)!
     }

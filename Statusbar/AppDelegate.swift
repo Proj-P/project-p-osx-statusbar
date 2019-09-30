@@ -14,23 +14,21 @@ import Foundation
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    var location: LocationModel = LocationModel(id: Config.LOCATION_ID);
+    var location: LocationModel = LocationModel(id: Config.LOCATION_ID)
     var socket: SocketConnector?
     var menuController: MenuController?
-    
-    let queueManager = QueueManager();
-    
+
+    let queueManager = QueueManager()
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Override point for customization after application launch.
-        self.location = LocationModel(id: Config.LOCATION_ID);
         self.socket = SocketConnector(model: self.location)
         self.socket!.listen(event: "location")
-        
+
         // Register initial defaults
         let initialDefaults = ["NSApplicationCrashOnExceptions": true]
         menuController = MenuController(location: self.location, queueManager: queueManager)
-        
-        
+
         UserDefaults.standard.register(defaults: initialDefaults)
     }
 
@@ -55,12 +53,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func toggleQueue() {
-        if(location.isOccupied == false)
-        {
-            queueManager.notifyUser();
-            return;
+        if(location.isOccupied == false) {
+            queueManager.notifyUser()
+            return
         }
-        
+
         if(queueManager.queued == false) {
             queueManager.start()
         } else {

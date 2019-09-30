@@ -17,16 +17,29 @@ class LocationModel: NSObject {
     var name: String?
     var lastUpdateDate: Date?
     var locationId: Int
-    var lastVisit: LocationVisit?
+
+    var visits: [LocationVisit] = []
+    var lastVisit: LocationVisit? {
+        get {
+            guard self.visits.count > 0 else {
+                return nil
+            }
+            print("getting last visit")
+            return self.visits.last
+        }
+        set {
+            self.visits.append(newValue!)
+            print("setting last visit")
+        }
+    }
 
     init(id: Int, name: String? = nil) {
         // perform some initialization here
         self.locationId = id
         self.name = name
         super.init()
-
+        print("init location")
         self.getLocationFromRest(id)
-        self.getLastVisitFromRest(id)
     }
 
     func updateState(_ occupied: Bool) {
@@ -42,34 +55,18 @@ class LocationModel: NSObject {
         isOccupied = occupied
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
-    
+
     func handleSocketResponse(_ rawJson: String) {
         do {
             let json = try JSONSerialization.jsonObject(with: rawJson.data(using: .utf8)!, options: [])
-            let location = Location(data: json as! [String: Any]);
-            self.handleUpdate(location);
-        }catch _ {
+            let location = Location(data: json as! [String: Any])
+            self.handleUpdate(location)
+        } catch _ {
             print("socket returned invalid JSON")
         }
     }
 
-    func handleRestResponse(_ result: JSON) -> Array<LocationModel> {
-        var collection = [] as Array<LocationModel>;
-        guard let response = result.array as Array<JSON>? else {
-            return collection;
-        }
-
-        
-        for row in response{
-            collection.append(LocationModel(
-                id: row["id"].int!,
-                name: row["name"].string!
-            ))
-        }
-        return collection;
-    }
-
-    func handleSingleRestResponse(_ result: JSON) {
+    func handleLocationRestResponse(_ result: JSON) {
         print("location updated by Rest API")
 
         guard let data = result.dictionaryObject else {
@@ -77,28 +74,10 @@ class LocationModel: NSObject {
             return
         }
 
-        let location = Location(data: data as [String : Any])
+        let location = Location(data: data as [String: Any])
 
         self.handleUpdate(location)
     }
-
-    func handleVisitRestResponse(_ result: JSON) {
-        print("visit updated by Rest API")
-        let row = result[result.count-1];
-        
-        guard let data:[String: Any] = row.dictionaryObject else{
-            print("parsing error")
-            return
-        }
-
-        let visit = LocationVisit(data: data)
-        
-        self.lastVisit = visit;
-        
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "lastVisitUpdate"), object: visit)
-    }
-    
-    
 
     func handleUpdate(_ data: Location) {
 
@@ -107,14 +86,46 @@ class LocationModel: NSObject {
         }
 
         self.updateState(data.occupied)
+    }
 
+    func handleVisitRestResponse(_ result: JSON) {
+        print("handling Visit response")
+        guard let array = result.array else {
+            return
+        }
+
+        self.updateVisits(array)
+
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "lastVisitUpdate"), object: nil)
+        print("last ended visit: \(String(describing: self.visits.last?.end🕛))")
+    }
+
+    func updateVisits(_ array: [JSON]) {
+        self.visits.removeAll()
+
+       for row in array {
+           guard let data: [String: Any] = row.dictionaryObject else {
+               print("parsing error")
+               return
+           }
+
+           let visit = LocationVisit(data: data)
+
+           guard visit.locationId == Config.LOCATION_ID else {
+               continue
+           }
+
+           self.visits.append(visit)
+       }
     }
 
     func getLocationFromRest(_ id: Int) {
-        RestApiManager.sharedInstance.getLocationData(id, onCompletion: self.handleSingleRestResponse)
+        let path = "/locations/\(id)"
+        RestApiManager.sharedInstance.getData(path, onCompletion: self.handleLocationRestResponse)
     }
 
     func getLastVisitFromRest(_ id: Int) {
-        RestApiManager.sharedInstance.getLocationVisitData(id, onCompletion: self.handleVisitRestResponse)
+        let path = "/visits/recent"
+        RestApiManager.sharedInstance.getData(path, onCompletion: self.handleVisitRestResponse)
     }
 }
