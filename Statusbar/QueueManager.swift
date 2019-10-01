@@ -23,15 +23,17 @@ class QueueManager: NSObject {
     }
 
     @objc func signal(notification: NSNotification) {
+        notifyUser()
+        self.stop()
+    }
 
+    func notifyUser() {
         let notification = NSUserNotification()
         notification.title = "Project-P"
         notification.informativeText = "all_clear".localized
         notification.soundName = self.sound
 
         NSUserNotificationCenter.default.deliver(notification)
-
-        self.stop()
     }
 
     func stop() {

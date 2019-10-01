@@ -1,8 +1,5 @@
 PODS:
-  - Crashlytics (3.13.4):
-    - Fabric (~> 1.10.2)
   - DateToolsSwift (4.0.0)
-  - Fabric (1.10.2)
   - Socket.IO-Client-Swift (15.1.0):
     - Starscream (~> 3.1)
   - Starscream (3.1.0)
@@ -10,18 +7,14 @@ PODS:
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
-  - Crashlytics
   - DateToolsSwift
-  - Fabric
   - Socket.IO-Client-Swift
   - SwiftLint
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Crashlytics
     - DateToolsSwift
-    - Fabric
     - Socket.IO-Client-Swift
     - Starscream
     - SwiftLint
@@ -36,14 +29,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
-  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
-  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   SwiftyJSON: f0574c07d8ca1644050db687067209e3033a89a0
 
-PODFILE CHECKSUM: 18a57d6426b7ae13c40e7d448010dd28aa05ff43
+PODFILE CHECKSUM: 286211ced76ef962b0f8b057d1862e8e90157af6
 
 COCOAPODS: 1.7.5

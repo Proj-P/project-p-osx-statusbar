@@ -8,46 +8,42 @@
 
 import Cocoa
 import Foundation
-import Fabric
-import Crashlytics
 
 @NSApplicationMain
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    let location = LocationModel(id: Config.LOCATION_ID)
+    var location: LocationModel = LocationModel(id: Config.LOCATION_ID)
+    var socket: SocketConnector?
     var menuController: MenuController?
-    
-    let queueManager = QueueManager();
-    let timer = TimedNotificationTicker(notificationName: "minutePassed", intervalInSeconds: 60)
 
-    
+    let queueManager = QueueManager()
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Override point for customization after application launch.
+        self.socket = SocketConnector(model: self.location)
+        self.socket!.listen(event: "location")
+
         // Register initial defaults
         let initialDefaults = ["NSApplicationCrashOnExceptions": true]
         menuController = MenuController(location: self.location, queueManager: queueManager)
-        
-        
+
         UserDefaults.standard.register(defaults: initialDefaults)
-        Fabric.with([Crashlytics.self])
-        self.timer.start()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
-        menuController!.location.closeConnection()
-        timer.stop()
+        socket!.closeConnection()
     }
 
     func applicationWillTerminate() {
         // Insert code here to tear down your application
-        menuController!.location.closeConnection()
-        timer.stop()
+        socket!.closeConnection()
     }
 
     @objc func exitNow() {
-        self.location.closeConnection()
+        socket!.closeConnection()
         NSApplication.shared.terminate(self)
     }
 
@@ -57,6 +53,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func toggleQueue() {
+        if(location.isOccupied == false) {
+            queueManager.notifyUser()
+            return
+        }
+
         if(queueManager.queued == false) {
             queueManager.start()
         } else {

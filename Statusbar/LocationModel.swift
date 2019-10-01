@@ -7,50 +7,39 @@
 //
 
 import Cocoa
-import SocketIO
+
 import SwiftyJSON
 
 class LocationModel: NSObject {
-    let apiURL: String      = Config.API_URL
+    let apiURL: String = Config.API_URL
     var state🚽🔒:String?
     var isOccupied: Bool?
     var name: String?
     var lastUpdateDate: Date?
     var locationId: Int
-    var lastVisit: LocationVisitModel?
 
-    let manager = SocketManager(socketURL: URL(string: Config.API_URL)!, config: [.log(true), .compress])
-
-    var socket: SocketIOClient
+    var visits: [LocationVisit] = []
+    var lastVisit: LocationVisit? {
+        get {
+            guard self.visits.count > 0 else {
+                return nil
+            }
+            print("getting last visit")
+            return self.visits.last
+        }
+        set {
+            self.visits.append(newValue!)
+            print("setting last visit")
+        }
+    }
 
     init(id: Int, name: String? = nil) {
         // perform some initialization here
         self.locationId = id
         self.name = name
-        self.socket = self.manager.defaultSocket
         super.init()
-
+        print("init location")
         self.getLocationFromRest(id)
-        self.getLastVisitFromRest(id)
-        self.socketConnect()
-    }
-
-    func socketConnect() {
-        socket.on("connect") {_, _ in
-            print("socket connected")
-        }
-
-        socket.on("location") {result, _ in
-            if let data = result as? Array<Dictionary<String, Dictionary<String, AnyObject>>> {
-                guard let row = data[0]["data"] else {
-                    print("invalid response")
-                    return
-                }
-                self.handleSocketResponse(row)
-            }
-        }
-
-        socket.connect()
     }
 
     func updateState(_ occupied: Bool) {
@@ -67,108 +56,76 @@ class LocationModel: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
     }
 
-    func handleSocketResponse(_ row: Dictionary<String, AnyObject>) {
-        print("location updated by socket")
-
-        let occupied = (row["occupied"] as? Bool == true)
-
-        self.handleUpdate(occupied, data: row)
+    func handleSocketResponse(_ rawJson: String) {
+        do {
+            let json = try JSONSerialization.jsonObject(with: rawJson.data(using: .utf8)!, options: [])
+            let location = Location(data: json as! [String: Any])
+            self.handleUpdate(location)
+        } catch _ {
+            print("socket returned invalid JSON")
+        }
     }
 
-    func handleRestResponse(_ result: JSON) -> Array<LocationModel> {
-        var collection = [] as Array<LocationModel>;
-        guard let response = result["data"].array as Array<JSON>? else {
-            return collection;
-        }
-
-        
-        for row in response{
-            collection.append(LocationModel(
-                id: row["id"].int!,
-                name: row["name"].string!
-            ))
-        }
-        return collection;
-    }
-
-    func handleSingleRestResponse(_ result: JSON) {
+    func handleLocationRestResponse(_ result: JSON) {
         print("location updated by Rest API")
-        print(result["data"] )
-        if(result == JSON.null || result.rawString() == "") {
-            print("empty response")
+
+        guard let data = result.dictionaryObject else {
+            print("parsing error")
             return
         }
 
-        if let error = result["error"].string {
-            print("error recieved")
-            print(error)
-            return
+        let location = Location(data: data as [String: Any])
+
+        self.handleUpdate(location)
+    }
+
+    func handleUpdate(_ data: Location) {
+
+        if(data.occupied == false) {
+            self.getLastVisitFromRest(locationId)
         }
 
-        if let error = result["error"].dictionary {
-            //Now you got your value
-            print(error)
-            return
-        }
-
-        guard let row = result["data"].dictionary else {
-            return
-        }
-
-        print("hoogashaka")
-        let object = row as Dictionary<String, AnyObject>
-        guard let status = row["occupied"]?.bool else {
-            print("invalid response")
-            return
-        }
-
-        self.handleUpdate(status, data: object)
-        return
-
+        self.updateState(data.occupied)
     }
 
     func handleVisitRestResponse(_ result: JSON) {
-        print("visit updated by Rest API")
-
-        if(result == JSON.null) {
+        print("handling Visit response")
+        guard let array = result.array else {
             return
         }
 
-        let row: JSON = result["data"][result["data"].count-1]
+        self.updateVisits(array)
 
-        self.lastVisit = LocationVisitModel(
-            id: row["id"].int!,
-            end🕛: row["end_time"].string!,
-            start🕛: row["start_time"].string!,
-            locationId: row["location_id"].int!,
-            duration: row["duration"].double!
-        )
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "locationStateUpdate"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "lastVisitUpdate"), object: nil)
+        print("last ended visit: \(String(describing: self.visits.last?.end🕛))")
     }
 
-    func handleUpdate(_ occupied: Bool, data: Dictionary<String, AnyObject>) {
+    func updateVisits(_ array: [JSON]) {
+        self.visits.removeAll()
 
-        if(occupied == false) {
-        self.getLastVisitFromRest(locationId)
-        }
+       for row in array {
+           guard let data: [String: Any] = row.dictionaryObject else {
+               print("parsing error")
+               return
+           }
 
-        self.updateState(occupied)
+           let visit = LocationVisit(data: data)
 
-    }
+           guard visit.locationId == Config.LOCATION_ID else {
+               continue
+           }
 
-    deinit {
-        self.closeConnection()
-    }
-
-    func closeConnection() {
-        socket.disconnect()
+           self.visits.append(visit)
+       }
     }
 
     func getLocationFromRest(_ id: Int) {
-        RestApiManager.sharedInstance.getLocationData(id, onCompletion: self.handleSingleRestResponse)
+        let path = "/locations/\(id)"
+        RestApiManager.sharedInstance.getData(path, onCompletion: self.handleLocationRestResponse)
     }
 
     func getLastVisitFromRest(_ id: Int) {
-        RestApiManager.sharedInstance.getLocationVisitData(id, onCompletion: self.handleVisitRestResponse)
+        let path = "/visits/recent"
+        RestApiManager.sharedInstance.getData(path, onCompletion: self.handleVisitRestResponse)
     }
 }

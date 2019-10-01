@@ -11,49 +11,58 @@ import SwiftyJSON
 
 typealias ServiceResponse = (JSON, Error?) -> Void
 
-class RestApiManager: NSObject {
+enum httpError: Error {
+    case validationError(String)
+    case clientError(String)
+}
+
+class RestApiManager {
     static let sharedInstance = RestApiManager()
     let baseURL = Config.API_URL
 
-    func getLocationVisitData(_ id: Int, onCompletion: @escaping (JSON) -> Void) {
-        let route = baseURL + "\(id)/visits"
+    func getData(_ path: String, onCompletion: @escaping (JSON) -> Void) {
+        let route = baseURL + path
         makeHTTPGetRequest(route, onCompletion: { json, _ in
-            onCompletion(json as JSON)
+            do {
+                let data = try self.verifyResponse(json)
+                onCompletion(data)
+            } catch {
+                return
+            }
         })
     }
 
-    func getLocationData(_ id: Int, onCompletion: @escaping (JSON) -> Void) {
-        let route = baseURL + "\(id)"
-        makeHTTPGetRequest(route, onCompletion: { json, _ in
-            onCompletion(json as JSON)
-        })
-    }
+    func verifyResponse(_ result: JSON)throws -> JSON {
 
-    func getLocationsData(onCompletion: @escaping (JSON) -> Array<LocationModel>) {
-        let route = baseURL
-        makeHTTPGetRequest(route, onCompletion: { json, _ in
-            onCompletion(json as JSON)
-        })
+        if(result == JSON.null || result.rawString() == "") {
+            throw httpError.validationError("empty response")
+        }
+
+        if let error = result["error"].string {
+            throw httpError.clientError(error)
+        }
+
+        if let error = result["error"].dictionary {
+            throw httpError.clientError("invalid request: \(error)")
+        }
+
+        return result
     }
 
     func makeHTTPGetRequest(_ path: String, onCompletion: @escaping ServiceResponse) {
-        let request = NSMutableURLRequest(url: URL(string: path)!)
+        let request = NSMutableURLRequest(
+            url: URL(string: path)!,
+            cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
+            timeoutInterval: 5)
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, error) in
-
-            if(data == nil) {
-                onCompletion(JSON.null, error)
-            }
-
-            guard let data = data else {
+            guard data != nil else {
                 onCompletion(JSON.null, error)
                 return
             }
 
             do {
-                guard let json: JSON = try JSON(data: data) else {
-                    onCompletion(JSON.null, error)
-                }
+                let json: JSON = try JSON(data: data!)
                 onCompletion(json, error)
             } catch {
                 // ehhhhhh
