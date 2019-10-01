@@ -50,21 +50,19 @@ class RestApiManager {
     }
 
     func makeHTTPGetRequest(_ path: String, onCompletion: @escaping ServiceResponse) {
-        let request = NSMutableURLRequest(url: URL(string: path)!)
+        let request = NSMutableURLRequest(
+            url: URL(string: path)!,
+            cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
+            timeoutInterval: 5)
 
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, error) in
-
-            if(data == nil) {
-                onCompletion(JSON.null, error)
-            }
-
-            guard let data = data else {
+            guard data != nil else {
                 onCompletion(JSON.null, error)
                 return
             }
 
             do {
-                let json: JSON = try JSON(data: data)
+                let json: JSON = try JSON(data: data!)
                 onCompletion(json, error)
             } catch {
                 // ehhhhhh
