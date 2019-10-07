@@ -13,31 +13,59 @@ import Foundation
 class Menu: NSMenu {
 
     var queueText = "queue_start".localized
+    var icon = NSImage(named: "tp2_free")
+    var visitCount = 0
+
     let stincrementCalculator   = StincrementCalculator()
 
     let smellMenuItem   = NSMenuItem()
     let timeMenuItem    = NSMenuItem()
     let stateMenuItem   = NSMenuItem()
-    var queueItem = NSMenuItem()
-    var titleItem = NSMenuItem()
-    var exitItem = NSMenuItem()
+    var locationItem    = NSMenuItem()
+    var errorItem       = NSMenuItem(
+        title: "network_error".localized,
+        action: nil,
+        keyEquivalent: ""
+    )
+
+    var queueItem = NSMenuItem(
+        title: "queue_start".localized,
+        action: #selector(AppDelegate.toggleQueue),
+        keyEquivalent: "e"
+    )
+
+    var titleItem = NSMenuItem(
+        title: "ProjectP",
+        action: #selector(AppDelegate.openWeb),
+        keyEquivalent: "w"
+    )
+
+    var exitItem = NSMenuItem(
+        title: "quit".localized,
+        action: #selector(AppDelegate.exitNow),
+        keyEquivalent: "q"
+    )
+
+    var refreshItem = NSMenuItem(
+        title: "refresh".localized,
+        action: #selector(AppDelegate.refreshInfo),
+        keyEquivalent: "r"
+    )
 
     var smellText: String = ""
     var lastVisitDateText: String = ""
-    var icon = NSImage(named: ("tp2_free"))
+
     var statusItem: NSStatusItem
     var queued: Bool
 
-    init(title: String, location: LocationModel, statusItem: NSStatusItem, queued: Bool) {
+    init(title: String, statusItem: NSStatusItem, queued: Bool) {
         self.queued = queued
         self.statusItem = statusItem
-        super.init(title: title)
-        queueItem = NSMenuItem(title: self.queueText, action: #selector(AppDelegate.toggleQueue), keyEquivalent:
-            "e")
-        titleItem = NSMenuItem(title: "ProjectP", action: #selector(AppDelegate.openWeb), keyEquivalent:
-            "w")
-        exitItem = NSMenuItem(title: "quit".localized, action: #selector(AppDelegate.exitNow), keyEquivalent: "q")
 
+        titleItem.image = NSImage(named: "icon")
+        super.init(title: title)
+
+        self.updateIcon(isOccupied: false)
         paint()
     }
 
@@ -46,10 +74,11 @@ class Menu: NSMenu {
     }
 
     func paint() {
-        statusItem.image = icon
-        //        statusItem.action = #selector(AppDelegate.openWeb)
+        icon!.isTemplate = true // best for dark mode
 
         self.addItem(titleItem)
+        self.addItem(NSMenuItem.separator())
+        self.addItem(locationItem)
         self.addItem(NSMenuItem.separator())
         self.addItem(stateMenuItem)
         self.addItem(smellMenuItem)
@@ -57,6 +86,10 @@ class Menu: NSMenu {
         self.addItem(timeMenuItem)
         self.addItem(NSMenuItem.separator())
         self.addItem(queueItem)
+        self.addItem(NSMenuItem.separator())
+        if(Config.MANUAL_REFRESH) {
+            self.addItem(refreshItem)
+        }
         self.addItem(NSMenuItem.separator())
         self.addItem(exitItem)
 
@@ -69,28 +102,20 @@ class Menu: NSMenu {
         }
     }
 
-    func updateItems(location: LocationModel) {
-        if(location.lastUpdateDate == nil) {
-            return
-        }
+    func showError() {
+        self.addItem(errorItem)
+    }
 
-        icon?.isTemplate = true // best for dark mode
-        titleItem.image = NSImage(named: "icon")
+    func updateItems(location: Location, lastVisit: LocationVisit?) {
+        locationItem.title = "Location: \(location.name) (\(visitCount) visits today)"
 
-        if location.lastUpdateDate == nil { // location was not yet loaded
-            self.addItem(NSMenuItem(title: "network_error".localized, action: nil, keyEquivalent: ""))
-
-        }
-
-        //            icon?.template = true // best for dark mode
-
-        if let lastVisit = location.lastVisit {
-            let end🕛       = lastVisit.end🕛
-            let duration    = lastVisit.duration
+        if (lastVisit != nil) {
+            let end🕛       = lastVisit!.endTime
+            let duration    = lastVisit!.duration
 
             let durationMin     = max(1, duration / 60) // visit time in minutes
             let interval        = end🕛.timeIntervalSinceNow // time ago in seconds
-            let intervalMin         = Int(floor(interval / 60))
+            let intervalMin     = Int(floor(interval / 60))
 
             lastVisitDateText   = stringFromTimeInterval(interval, durationMin) as String
             smellText           = stincrementCalculator.calculate(durationMin, timeAgo🕛: intervalMin)
@@ -100,28 +125,15 @@ class Menu: NSMenu {
             lastVisitDateText    = "-"
         }
 
+        let stateText = (location.occupied) ?
+            "occupied_true".localized :
+            "occupied_false".localized
+
         smellMenuItem.title     = "smell_o_meter_label".localized + smellText
         timeMenuItem.title      = "last_visit_label".localized + lastVisitDateText
+        stateMenuItem.title     = "status_label".localized + stateText
 
-        switch Config.STYLE {
-        case 1:
-            if location.state🚽🔒 != nil {
-                let text = (location.state🚽🔒 == "🔒") ? "Occupado!" : "Go ahead!"
-                stateMenuItem.title = "🚽" + location.state🚽🔒! + text
-            }
-            break
-        case 2:
-            let imageName = (location.isOccupied! == true)
-                ? "project-p-tray-16-closed"
-                : "project-p-tray-16-open"
-            stateMenuItem.image = NSImage(named: imageName)
-            stateMenuItem.title = location.state🚽🔒!
-            break
-        default:
-            break
-        }
-
-        queueItem.isEnabled = location.isOccupied!
+        queueItem.isEnabled = location.occupied
 
         queueItem.title = (queued==false)
             ? "queue_start".localized

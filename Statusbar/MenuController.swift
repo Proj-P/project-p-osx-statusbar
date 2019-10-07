@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import DateToolsSwift
 
 class MenuController: NSObject, NSMenuDelegate {
 
@@ -15,14 +14,16 @@ class MenuController: NSObject, NSMenuDelegate {
     let siteURL: String = Config.SITE_URL
     var menu: Menu
     var isOpen: Bool = false
-    var location: LocationModel
+    var locationModel: LocationModel
     var lastUpdate: Date = Date()
+    var queueManager: QueueManager
 
-    init(location: LocationModel, queueManager: QueueManager) {
-        self.location = location
+    init(locationModel: LocationModel, queueManager: QueueManager) {
+        self.locationModel = locationModel
+        self.queueManager = queueManager
+
         self.menu = Menu(
             title: "Main menu",
-            location: location,
             statusItem: statusItem,
             queued: queueManager.queued
         )
@@ -31,17 +32,32 @@ class MenuController: NSObject, NSMenuDelegate {
 
         statusItem.menu = menu
         menu.delegate = self
+        menu.visitCount = self.locationModel.visits.count
+
+        menu.updateIcon(isOccupied: false)
         self.updateItems()
-        menu.updateIcon(isOccupied: location.isOccupied ?? false)
+
         self.placeObservers()
     }
 
-    func placeObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.locationStateUpdate), name: NSNotification.Name(rawValue: "locationStateUpdate"), object: nil)
+    private func placeObservers() {
+        self.locationModel.onOccupationChange.subscribe(with: self) { (occupied) in
+            self.menu.updateIcon(isOccupied: occupied)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.queueStateUpdate), name: NSNotification.Name(rawValue: "queued"), object: nil)
+            if(self.queueManager.queued && occupied == false) {
+                self.queueManager.signal()
+            }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.visitsUpdate), name: NSNotification.Name(rawValue: "lastVisitUpdate"), object: nil)
+            if(self.isOpen) {
+               self.updateItems()
+            }
+        }
+
+        self.locationModel.onVisits.subscribe(with: self) {_ in
+            if(self.isOpen) {
+                self.updateItems()
+            }
+        }
     }
 
     func menuDidClose(_ menu: NSMenu) {
@@ -49,40 +65,23 @@ class MenuController: NSObject, NSMenuDelegate {
     }
 
     func menuWillOpen(_ menu: NSMenu) {
+        locationModel.getLastVisitsFromRest(self.locationModel.locationId)
+        menu.update()
         self.isOpen = true
     }
 
     func updateItems() {
-        print("updating menu")
+        menu.queued = self.queueManager.queued
 
-        menu.updateItems(location: self.location)
+        guard let location = self.locationModel.location else {
+            return
+        }
+
+        menu.visitCount = self.locationModel.getVisitsToday()
+        menu.updateItems(location: location, lastVisit: self.locationModel.lastVisit)
     }
 
     func menuNeedsUpdate(_: NSMenu) {
         updateItems()
-    }
-
-    @objc func queueStateUpdate(_ notification: NSNotification) {
-        let state = notification.object as! Bool
-        menu.queued = state
-    }
-
-    @objc func visitsUpdate(_ notification: Notification) {
-        if(isOpen) {
-            self.updateItems()
-        }
-    }
-
-    @objc func locationStateUpdate(_ notification: Notification) {
-
-        menu.updateIcon(isOccupied: self.location.isOccupied ?? false)
-
-        if(menu.queued && self.location.isOccupied == false) {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "allClear"), object: nil)
-        }
-
-        if(isOpen) {
-            self.updateItems()
-        }
     }
 }

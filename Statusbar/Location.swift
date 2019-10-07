@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Location: Codable {
+class Location {
     let changed_at: Date?
     let id: Int
     let name: String
@@ -22,12 +22,9 @@ class Location: Codable {
           occupied: Bool
         ) {
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-
         self.id = id
 
-        self.changed_at = formatter.date(from: changedAt)
+        self.changed_at = changedAt.toDate
         self.average_duration = averageDuration
 
         self.name = name
@@ -36,16 +33,12 @@ class Location: Codable {
 
     init (data: [String: Any]) {
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-
         self.id = data["id"] as! Int
-        let changedAt = data["changed_at"] as! String
-
-        self.changed_at = formatter.date(from: changedAt)
         self.average_duration = data["average_duration"] as! Int
-
         self.name = data["name"] as! String
         self.occupied = data["occupied"] as! Bool
+
+        let changedAt = data["changed_at"] as! String
+        self.changed_at = changedAt.toDate
     }
 }

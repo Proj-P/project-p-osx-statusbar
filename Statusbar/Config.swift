@@ -12,7 +12,7 @@ struct Config {
     static let SITE_URL     = "https://project-p.tjuna.dev"
     static let API_URL      = "https://project-p.vps101.tjuna.com"
     static let LOCATION_ID  = 1
-    static let STYLE        = 1
     static let API_HOUR_OFFSET = -2
     static let SOCKET_LOGGING = false
+    static let MANUAL_REFRESH = false
 }

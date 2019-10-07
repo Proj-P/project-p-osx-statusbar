@@ -6,23 +6,25 @@
 //  Copyright © 2017 Tjuna. All rights reserved.
 //
 
-import Cocoa
+import Signals
 
-class QueueManager: NSObject {
+class QueueManager {
 
     var queued = false
     var observing = false
     var sound = NSUserNotificationDefaultSoundName
+    var onQueue = Signal<Date>()
+
     func start() {
         NotificationCenter.default.addObserver(self, selector: #selector(signal), name: NSNotification.Name(rawValue: "allClear"), object: nil)
 
         observing = true
         queued = true
 
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "queued"), object: queued)
+        onQueue.fire(Date())
     }
 
-    @objc func signal(notification: NSNotification) {
+    @objc func signal() {
         notifyUser()
         self.stop()
     }
@@ -42,6 +44,5 @@ class QueueManager: NSObject {
             observing = false
         }
         queued = false
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "queued"), object: queued)
     }
 }
