@@ -107,7 +107,8 @@ class Menu: NSMenu {
     }
 
     func updateItems(location: Location, lastVisit: LocationVisit?) {
-        locationItem.title = "Location: \(location.name) (\(visitCount) visits today)"
+        locationItem.title = "\("location".localized): \(location.name)" +
+        " (\(visitCount) \("visits today".localized))"
 
         if (lastVisit != nil) {
             let end🕛       = lastVisit!.endTime

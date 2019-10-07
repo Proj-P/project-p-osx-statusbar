@@ -6,13 +6,16 @@
   Copyright © 2017 Tjuna. All rights reserved.
 */
 "network_error" = "Kan geen verbinding maken met de server!";
-"queue_start" = "Hou me op de hoogte!";
-"queue_stop" = "Laat maar, vals alarm!";
+"queue_start" = "Zeg me wanneer ik kan gaan!";
+"queue_stop" = "Laat maar, vals alarm";
 "quit"= "Afsluiten";
 "all_clear" = "De kust is veilig! ✨";
 "smell_o_meter_label" = "💨' Meter: ";
-"last_visit_label" = "🕛 ";
+"last_visit_label" = "Laatste bezoek: ";
 "status_label" = "Status: ";
 "duration_label" = "🕛 Duurde ";
 "occupied_true" = "⛔️ Occupado!";
 "occupied_false" = "👍 Doe je ding!";
+
+"location"  = "Locatie";
+"visits today" = "Bezoeken vandaag";

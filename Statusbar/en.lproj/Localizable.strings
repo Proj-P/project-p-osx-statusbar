@@ -16,3 +16,5 @@
 "duration_label" = "Last visit took ";
 "occupied_true" = "⛔️ Occupado!";
 "occupied_false" = "👍 Go ahead!";
+"location"  = "Location";
+"visits today" = "Visits today";
