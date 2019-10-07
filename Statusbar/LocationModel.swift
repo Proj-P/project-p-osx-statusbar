@@ -69,7 +69,6 @@ class LocationModel: NSObject {
         do {
             let json = try JSONSerialization.jsonObject(with: rawJson.data(using: .utf8)!, options: [])
             let location = Location(data: json as! [String: Any])
-            print("location updated by socket: \(location.self)")
             self.onLocation.fire((location))
             self.getLastVisitsFromRest(self.locationId)
         } catch _ {
@@ -83,8 +82,6 @@ class LocationModel: NSObject {
     }
 
     func handleLocationRestResponse(_ result: JSON) {
-        print("location updated by Rest API")
-
         guard let data = result.dictionaryObject else {
             print("parsing error")
             return

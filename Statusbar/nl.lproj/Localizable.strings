@@ -14,7 +14,5 @@
 "last_visit_label" = "🕛 ";
 "status_label" = "Status: ";
 "duration_label" = "🕛 Duurde ";
-"occupied_true" = "Occupado!";
-"occupied_false" = "Ga je gang!";
-"occupied_true_emoji" = "🔒";
-"occupied_false_emoji" = "🔓";
+"occupied_true" = "⛔️ Occupado!";
+"occupied_false" = "👍 Doe je ding!";

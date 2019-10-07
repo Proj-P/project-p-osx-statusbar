@@ -11,16 +11,19 @@
 		0365E3131D3588E200E40A5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0365E3121D3588E200E40A5C /* AppDelegate.swift */; };
 		0365E3151D3588E200E40A5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0365E3141D3588E200E40A5C /* Assets.xcassets */; };
 		0365E3181D3588E200E40A5C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0365E3161D3588E200E40A5C /* MainMenu.xib */; };
-		03AC69C21D48A02800EC2E78 /* LocationVisitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */; };
+		039AF485234B379400562FDE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039AF484234B379400562FDE /* DateFormatter.swift */; };
 		03C46AB21D3D2C9200A30AF3 /* RestApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */; };
 		03C46AB41D420D3700A30AF3 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB31D420D3700A30AF3 /* MenuController.swift */; };
 		03C46AB61D420DE900A30AF3 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB51D420DE900A30AF3 /* LocationModel.swift */; };
 		03C46AB81D4220BB00A30AF3 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46AB71D4220BB00A30AF3 /* Config.swift */; };
 		03C46ABB1D42345600A30AF3 /* StincrementCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */; };
-		03C46ABD1D42496900A30AF3 /* TimedNotificationTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */; };
 		03C4E49F1E76D6D400470588 /* Localizator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C4E49E1E76D6D400470588 /* Localizator.swift */; };
 		03C5E35A1E73108E00AF00C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C5E35C1E73108E00AF00C8 /* Localizable.strings */; };
 		03E8D784231F0BEF00A6486F /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E8D783231F0BEF00A6486F /* Menu.swift */; };
+		03ECBF19233B5C62000E66BF /* SocketConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECBF18233B5C62000E66BF /* SocketConnector.swift */; };
+		03ECBF1A233BBE86000E66BF /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347957C1E7154650035CEF0 /* SocketIO.framework */; };
+		03ECBF1C233C9C8B000E66BF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECBF1B233C9C8B000E66BF /* Location.swift */; };
+		03ECBF1E233CDAEC000E66BF /* LocationVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECBF1D233CDAEC000E66BF /* LocationVisit.swift */; };
 		44ACA5D9A9E8097D2E61B710 /* Pods_Statusbar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F52593E130CC257ECD7CAD6 /* Pods_Statusbar.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,18 +35,20 @@
 		0365E3141D3588E200E40A5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0365E3171D3588E200E40A5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		0365E3191D3588E200E40A5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationVisitModel.swift; sourceTree = "<group>"; };
+		039AF484234B379400562FDE /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApiManager.swift; sourceTree = "<group>"; };
 		03C46AB31D420D3700A30AF3 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		03C46AB51D420DE900A30AF3 /* LocationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		03C46AB71D4220BB00A30AF3 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StincrementCalculator.swift; sourceTree = "<group>"; };
-		03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimedNotificationTicker.swift; sourceTree = "<group>"; };
 		03C4E49E1E76D6D400470588 /* Localizator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizator.swift; sourceTree = "<group>"; };
 		03C5E3591E73105D00AF00C8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		03C5E35B1E73108E00AF00C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03C5E35D1E73109B00AF00C8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03E8D783231F0BEF00A6486F /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		03ECBF18233B5C62000E66BF /* SocketConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketConnector.swift; sourceTree = "<group>"; };
+		03ECBF1B233C9C8B000E66BF /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		03ECBF1D233CDAEC000E66BF /* LocationVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationVisit.swift; sourceTree = "<group>"; };
 		44149DAD262C194152F0342A /* Pods-Statusbar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Statusbar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Statusbar/Pods-Statusbar.release.xcconfig"; sourceTree = "<group>"; };
 		6F52593E130CC257ECD7CAD6 /* Pods_Statusbar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Statusbar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33AED60E67A4FF5C6DB09C2 /* Pods-Statusbar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Statusbar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Statusbar/Pods-Statusbar.debug.xcconfig"; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03ECBF1A233BBE86000E66BF /* SocketIO.framework in Frameworks */,
 				44ACA5D9A9E8097D2E61B710 /* Pods_Statusbar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,7 +88,8 @@
 		0365E3111D3588E200E40A5C /* Statusbar */ = {
 			isa = PBXGroup;
 			children = (
-				03E8D780231F0B9000A6486F /* views */,
+				039AF486234B39FA00562FDE /* Extensions */,
+				03E8D780231F0B9000A6486F /* Views */,
 				03C5E3541E730DA200AF00C8 /* Language */,
 				03C46AC11D427A9200A30AF3 /* Config */,
 				03C46AC01D427A8C00A30AF3 /* Libraries */,
@@ -96,11 +103,21 @@
 			path = Statusbar;
 			sourceTree = "<group>";
 		};
+		039AF486234B39FA00562FDE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				03C4E49E1E76D6D400470588 /* Localizator.swift */,
+				039AF484234B379400562FDE /* DateFormatter.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		03C46ABE1D427A6E00A30AF3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				03C46AB51D420DE900A30AF3 /* LocationModel.swift */,
-				03AC69C11D48A02800EC2E78 /* LocationVisitModel.swift */,
+				03ECBF1B233C9C8B000E66BF /* Location.swift */,
+				03ECBF1D233CDAEC000E66BF /* LocationVisit.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -118,9 +135,8 @@
 			children = (
 				03C46AB11D3D2C9200A30AF3 /* RestApiManager.swift */,
 				03C46ABA1D42345600A30AF3 /* StincrementCalculator.swift */,
-				03C46ABC1D42496900A30AF3 /* TimedNotificationTicker.swift */,
 				0347957E1E71996A0035CEF0 /* QueueManager.swift */,
-				03C4E49E1E76D6D400470588 /* Localizator.swift */,
+				03ECBF18233B5C62000E66BF /* SocketConnector.swift */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -141,12 +157,12 @@
 			name = Language;
 			sourceTree = "<group>";
 		};
-		03E8D780231F0B9000A6486F /* views */ = {
+		03E8D780231F0B9000A6486F /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				03E8D783231F0BEF00A6486F /* Menu.swift */,
 			);
-			path = views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2CDF72AC3DE38E4B8FE9C0AD /* Pods */ = {
@@ -179,7 +195,6 @@
 				0365E30C1D3588E200E40A5C /* Frameworks */,
 				0365E30D1D3588E200E40A5C /* Resources */,
 				EED33D3699A1AD3BB6EB9715 /* [CP] Embed Pods Frameworks */,
-				03C46AB91D42214300A30AF3 /* ShellScript */,
 				03E8D77F231EEAA400A6486F /* ShellScript */,
 			);
 			buildRules = (
@@ -198,12 +213,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = Tjuna;
 				TargetAttributes = {
 					0365E30E1D3588E200E40A5C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = YGWX58MT2P;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -240,19 +257,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03C46AB91D42214300A30AF3 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 2f80912a696d88cd191b1847146edbc2941e60ff 0102f2002e9154924a0adf2678bdacda24bf84451859e959255197c1201899f3\n";
-		};
 		03E8D77F231EEAA400A6486F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,7 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "# \"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		6DEB8754772DF766B85D5986 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -296,6 +300,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Statusbar/Pods-Statusbar-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DateToolsSwift/DateToolsSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -303,6 +308,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DateToolsSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -319,14 +325,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03ECBF19233B5C62000E66BF /* SocketConnector.swift in Sources */,
+				03ECBF1E233CDAEC000E66BF /* LocationVisit.swift in Sources */,
 				03C46ABB1D42345600A30AF3 /* StincrementCalculator.swift in Sources */,
 				03C46AB61D420DE900A30AF3 /* LocationModel.swift in Sources */,
-				03C46ABD1D42496900A30AF3 /* TimedNotificationTicker.swift in Sources */,
 				0365E3131D3588E200E40A5C /* AppDelegate.swift in Sources */,
 				03C4E49F1E76D6D400470588 /* Localizator.swift in Sources */,
+				03ECBF1C233C9C8B000E66BF /* Location.swift in Sources */,
 				03E8D784231F0BEF00A6486F /* Menu.swift in Sources */,
-				03AC69C21D48A02800EC2E78 /* LocationVisitModel.swift in Sources */,
 				0347957F1E71996A0035CEF0 /* QueueManager.swift in Sources */,
+				039AF485234B379400562FDE /* DateFormatter.swift in Sources */,
 				03C46AB81D4220BB00A30AF3 /* Config.swift in Sources */,
 				03C46AB41D420D3700A30AF3 /* MenuController.swift in Sources */,
 				03C46AB21D3D2C9200A30AF3 /* RestApiManager.swift in Sources */,
@@ -467,11 +475,18 @@
 			baseConfigurationReference = A33AED60E67A4FF5C6DB09C2 /* Pods-Statusbar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = YGWX58MT2P;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Statusbar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project-p.Statusbar";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -481,11 +496,18 @@
 			baseConfigurationReference = 44149DAD262C194152F0342A /* Pods-Statusbar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = YGWX58MT2P;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Statusbar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project-p.Statusbar";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
