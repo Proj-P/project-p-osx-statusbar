@@ -19,6 +19,14 @@ enum httpError: Error {
 class RestApiManager {
     static let sharedInstance = RestApiManager()
     let baseURL = Config.API_URL
+    var session: URLSession
+
+    init() {
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+        self.session = URLSession.init(configuration: config)
+    }
 
     func getData(_ path: String, onCompletion: @escaping (JSON) -> Void) {
         let route = baseURL + path
@@ -55,7 +63,7 @@ class RestApiManager {
             cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
             timeoutInterval: 5)
 
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, _, error) in
+        let task = self.session.dataTask(with: request as URLRequest) { (data, _, error) in
             guard data != nil else {
                 onCompletion(JSON.null, error)
                 return

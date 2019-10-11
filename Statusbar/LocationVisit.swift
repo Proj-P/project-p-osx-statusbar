@@ -10,40 +10,35 @@ import Cocoa
 import SocketIO
 import SwiftyJSON
 
-class LocationVisit: NSObject {
+class LocationVisit {
 
-    var start🕛: Date
-    var end🕛: Date
+    var startTime: Date
+    var endTime: Date
     var locationId: Int
     var locationVisitId: Int
     var duration: Int
 
-    init(id: Int, end🕛:String!, start🕛:String!, locationId: Int, duration: Int) {
+    init(id: Int, endTime: String!, startTime: String!, locationId: Int, duration: Int) {
         // perform some initialization here
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
 
         self.locationVisitId = id
-        self.end🕛      = formatter.date(from: end🕛)!
-        self.start🕛    = formatter.date(from: start🕛)!
-        self.locationId = locationId
-        self.duration   = duration
-
-        super.init()
+        self.endTime      = endTime.toDate
+        self.startTime    = startTime.toDate
+        self.locationId   = locationId
+        self.duration     = duration
     }
 
     init(data: [String: Any]) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
 
         self.locationVisitId = data["id"] as! Int
-        let end🕛 = data["end_time"] as! String
-        let start🕛  = data["start_time"] as! String
-        self.locationId = data["location_id"] as! Int
-        self.duration = Int(floor(data["duration"] as! Double))
+        self.locationId      = data["location_id"] as! Int
+        self.duration        = Int(floor(data["duration"] as! Double))
 
-        self.end🕛      = formatter.date(from: end🕛)!
-        self.start🕛    = formatter.date(from: start🕛)!
+        let endTimeString    = data["end_time"] as! String
+        let startTimeString  = data["start_time"] as! String
+
+        self.endTime      = endTimeString.toDate
+        self.startTime    = startTimeString.toDate
     }
 
 }

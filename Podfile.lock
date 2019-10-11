@@ -1,5 +1,6 @@
 PODS:
   - DateToolsSwift (4.0.0)
+  - Signals (6.1.0)
   - Socket.IO-Client-Swift (15.1.0):
     - Starscream (~> 3.1)
   - Starscream (3.1.0)
@@ -8,6 +9,7 @@ PODS:
 
 DEPENDENCIES:
   - DateToolsSwift
+  - Signals (~> 6.0)
   - Socket.IO-Client-Swift
   - SwiftLint
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
@@ -15,6 +17,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - DateToolsSwift
+    - Signals
     - Socket.IO-Client-Swift
     - Starscream
     - SwiftLint
@@ -30,11 +33,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
+  Signals: f8e5c979e93c35273f8dfe55ee7f47213d3e8fe8
   Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   SwiftyJSON: f0574c07d8ca1644050db687067209e3033a89a0
 
-PODFILE CHECKSUM: 286211ced76ef962b0f8b057d1862e8e90157af6
+PODFILE CHECKSUM: ad88734237f54a3ad1c1fd0b9a2be2bc33579840
 
 COCOAPODS: 1.7.5

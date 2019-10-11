@@ -14,7 +14,7 @@ import Foundation
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    var location: LocationModel = LocationModel(id: Config.LOCATION_ID)
+    var locationModel: LocationModel = LocationModel(id: Config.LOCATION_ID)
     var socket: SocketConnector?
     var menuController: MenuController?
 
@@ -22,12 +22,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Override point for customization after application launch.
-        self.socket = SocketConnector(model: self.location)
+        self.socket = SocketConnector(model: self.locationModel)
         self.socket!.listen(event: "location")
 
         // Register initial defaults
         let initialDefaults = ["NSApplicationCrashOnExceptions": true]
-        menuController = MenuController(location: self.location, queueManager: queueManager)
+        menuController = MenuController(locationModel: self.locationModel, queueManager: queueManager)
 
         UserDefaults.standard.register(defaults: initialDefaults)
     }
@@ -47,13 +47,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApplication.shared.terminate(self)
     }
 
+    @objc func refreshInfo() {
+        self.locationModel.getLocationFromRest(locationModel.locationId)
+        self.locationModel.getLastVisitsFromRest(locationModel.locationId)
+    }
+
     @objc func openWeb() {
         let siteURL: String          = Config.SITE_URL
         NSWorkspace.shared.open(URL(string: siteURL)!)
     }
 
     @objc func toggleQueue() {
-        if(location.isOccupied == false) {
+        if(locationModel.isOccupied == false) {
             queueManager.notifyUser()
             return
         }

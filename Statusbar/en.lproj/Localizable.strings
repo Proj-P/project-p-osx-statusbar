@@ -11,5 +11,10 @@
 "quit"= "Quit";
 "all_clear"= "All Clear! ✨";
 "smell_o_meter_label" = "Stank'o Meter: ";
-"last_visit_label" = "last visit: ";
-"duration_label" = "last visit took ";
+"last_visit_label" = "Last visit: ";
+"status_label" = "Status: ";
+"duration_label" = "Last visit took ";
+"occupied_true" = "⛔️ Occupado!";
+"occupied_false" = "👍 Go ahead!";
+"location"  = "Location";
+"visits today" = "Visits today";

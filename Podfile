@@ -8,5 +8,6 @@ target 'Statusbar' do
   pod 'Socket.IO-Client-Swift'
   pod 'DateToolsSwift'
   pod 'SwiftLint'
+  pod 'Signals', '~> 6.0'
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 end
